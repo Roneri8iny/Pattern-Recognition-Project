@@ -3,9 +3,14 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn import linear_model
+from sklearn.model_selection import cross_val_score
+from sklearn.linear_model import LinearRegression
+from mlxtend.feature_selection import SequentialFeatureSelector
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import PolynomialFeatures
 import matplotlib.pyplot as plt
+from sklearn import metrics
 import seaborn as sns
 from sklearn.impute import SimpleImputer
 
@@ -30,7 +35,7 @@ ordinal_encoder_rating = OrdinalEncoder(categories=[rating_categories])
 
 data = pd.read_csv("ElecDeviceRatingPrediction.csv")
 new_data = data
-print(data.isna().sum())
+# print(data.isna().sum())
 
 # for column in data.columns:
 #     unique_values = data[column].unique()
@@ -41,9 +46,9 @@ new_data['processor_gnrtn'] = new_data['processor_gnrtn'].replace("Not Available
 mode_value = new_data['processor_gnrtn'].mode()[0]
 new_data['processor_gnrtn'] = new_data['processor_gnrtn'].fillna(mode_value)
 
-for column in new_data.columns:
-    unique_values = new_data[column].unique()
-    print("Unique values in column '{}': {}".format(column, unique_values))
+# for column in new_data.columns:
+#     unique_values = new_data[column].unique()
+#     print("Unique values in column '{}': {}".format(column, unique_values))
 
 # ram-gb ssd hdd graphic-card warranty generation --> Ordinal Encoding
 
@@ -93,17 +98,15 @@ new_data['os'] = label_encoder.fit_transform(new_data['os'])
 
 # Rating  --> Remove eccess string and convert to int
 
-
-for column in new_data.columns:
-    unique_values = new_data[column].unique()
-    print("Unique values in column '{}': {}".format(column, unique_values))
-
-new_data.to_csv('output.csv', index=False)
+# for column in new_data.columns:
+#     unique_values = new_data[column].unique()
+#     print("Unique values in column '{}': {}".format(column, unique_values))
 
 # Scaling
 scaled_data = scaler.fit_transform(new_data)
 scaled_df = pd.DataFrame(scaled_data, columns=new_data.columns)
 
+scaled_df.to_csv('output.csv', index=False)
 # Visualization
 # target_column = 'rating'
 # for column in scaled_df:
@@ -130,12 +133,119 @@ scaled_df = pd.DataFrame(scaled_data, columns=new_data.columns)
 # Outliers
 
 # Feature Selection
-corr_data = new_data.iloc[:, :]
-corr = corr_data.corr()
-top_feature = corr.index[abs((corr['rating']) > 0.1)]
-# Correlation plot
-plt.subplots(figsize=(12, 8))
-top_corr = corr_data[top_feature].corr()
-sns.heatmap(top_corr, annot=True)
-plt.show()
+
+# corr_data = new_data.iloc[:, :]
+# corr = corr_data.corr()
+# top_feature = corr.index[abs((corr['rating']) > 0.1)]
+# # Correlation plot
+# plt.subplots(figsize=(12, 8))
+# top_corr = corr_data[top_feature].corr()
+# sns.heatmap(top_corr, annot=True)
+# plt.show()
 # top_feature = top_feature.drop('Performance Index')
+
+y_scaled = scaled_df['rating']
+x_scaled = scaled_df.drop(columns=['rating'])
+# print(x_scaled.columns)
+
+# Train Test Split
+X_train, X_test, y_train, y_test = train_test_split(x_scaled, y_scaled, test_size=0.20, shuffle=True, random_state=10)
+
+selector_forward_train = SequentialFeatureSelector(LinearRegression(), forward=True, k_features='best',
+                                                   scoring='neg_mean_squared_error', cv=5)
+selector_forward_train.fit(X_train, y_train)
+
+selector_backward_train = SequentialFeatureSelector(LinearRegression(), forward=False, k_features='best',
+                                                    scoring='neg_mean_squared_error', cv=5)
+selector_backward_train.fit(X_train, y_train)
+
+selected_features_forward_train = selector_forward_train.k_feature_idx_
+selected_features_backward_train = selector_backward_train.k_feature_idx_
+
+x_after_feature_selection_forward_train = pd.DataFrame()
+x_after_feature_selection_backward_train = pd.DataFrame()
+x_after_feature_selection_forward_test = pd.DataFrame()
+x_after_feature_selection_backward_test = pd.DataFrame()
+
+# Train
+for column in selected_features_forward_train:
+    column_names_forward = x_scaled.columns[column]
+    column_name = X_train.columns[column]
+    column_values_train = X_train.iloc[:, column]
+    column_values_test = X_test.iloc[:, column]
+    x_after_feature_selection_forward_train[column_name] = column_values_train
+    x_after_feature_selection_forward_test[column_name] = column_values_test
+
+x_after_feature_selection_forward_test.to_csv('forward.csv', index=False)
+
+for column in selected_features_backward_train:
+    column_names_backward = x_scaled.columns[column]
+    column_name = X_train.columns[column]
+    column_values_train = X_train.iloc[:, column]
+    column_values_test = X_test.iloc[:, column]
+    x_after_feature_selection_backward_train[column_name] = column_values_train
+    x_after_feature_selection_backward_test[column_name] = column_values_test
+
+x_after_feature_selection_backward_test.to_csv('backward.csv', index=False)
+
+# Test
+# for column in selected_features_forward_test:
+#     column_names_forward = x_scaled.columns[column]
+#     print("Column names selected by forward selection:", column_names_forward)
+#     x_after_feature_selection_forward_test[column_names_forward] = x_scaled[column]
+#
+# for column in selected_features_backward_test:
+#     column_names_backward = x_scaled.columns[column]
+#     print("Column names selected by backward selection:", column_names_backward)
+#     x_after_feature_selection_backward_test[column_names_backward] = x_scaled[column]
+
+
+linear_model_forward = linear_model.LinearRegression()
+linear_model_backward = linear_model.LinearRegression()
+
+linear_model_forward.fit(x_after_feature_selection_forward_train, y_train)
+y_forward_train_predicted = linear_model_forward.predict(x_after_feature_selection_forward_train)
+
+y_predict_forward_test = linear_model_forward.predict(x_after_feature_selection_forward_test)
+
+linear_model_backward.fit(x_after_feature_selection_backward_train, y_train)
+y_backward_train_predicted = linear_model_backward.predict(x_after_feature_selection_backward_train)
+
+y_predict_backward_test = linear_model_backward.predict(x_after_feature_selection_backward_test)
+
+print('Mean Square Error Forward Train', metrics.mean_squared_error(np.asarray(y_train), y_forward_train_predicted))
+print('Mean Square Error Forward Test', metrics.mean_squared_error(np.asarray(y_test), y_predict_forward_test))
+
+print('Mean Square Error Backward Train', metrics.mean_squared_error(np.asarray(y_train), y_backward_train_predicted))
+print('Mean Square Error Backward Test', metrics.mean_squared_error(np.asarray(y_test), y_predict_backward_test))
+
+
+poly_features_forward = PolynomialFeatures(degree=2)
+poly_features_backward = PolynomialFeatures(degree=2)
+
+X_train_poly_forward = poly_features_forward.fit_transform(x_after_feature_selection_forward_train)
+X_train_poly_backward = poly_features_backward.fit_transform(x_after_feature_selection_backward_train)
+
+poly_model_forward = linear_model.LinearRegression()
+poly_model_backward = linear_model.LinearRegression()
+
+poly_model_forward.fit(X_train_poly_forward, y_train)
+poly_model_backward.fit(X_train_poly_backward, y_train)
+
+y_train_predicted_forward = poly_model_forward.predict(X_train_poly_forward)
+y_train_predicted_backward = poly_model_backward.predict(X_train_poly_backward)
+
+y_predict_test_forward = poly_model_forward.predict(
+    poly_features_forward.transform(x_after_feature_selection_forward_test))
+y_predict_test_backward = poly_model_backward.predict(
+    poly_features_backward.transform(x_after_feature_selection_backward_test))
+
+print('Mean Square Error Forward Train Poly',
+      metrics.mean_squared_error(np.asarray(y_train), y_train_predicted_forward))
+print('Mean Square Error Forward Test Poly', metrics.mean_squared_error(np.asarray(y_test), y_predict_test_forward))
+
+print('Mean Square Error Backward Train Poly',
+      metrics.mean_squared_error(np.asarray(y_train), y_train_predicted_backward))
+print('Mean Square Error Backward Test Poly', metrics.mean_squared_error(np.asarray(y_test), y_predict_test_backward))
+
+
