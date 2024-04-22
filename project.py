@@ -93,9 +93,9 @@ new_data['os'] = label_encoder.fit_transform(new_data['os'])
 scaled_data = scaler.fit_transform(new_data)
 scaled_df = pd.DataFrame(scaled_data, columns=new_data.columns)
 
-# scaled_df.to_csv('output.csv', index=False)
 
 # Visualization
+
 # target_column = 'rating'
 # for column in scaled_df:
 #     if column != target_column:
@@ -141,6 +141,8 @@ y_corr_train_predicted = linear_model_corr.predict(X_train_corr)
 
 y_predict_corr_test = linear_model_corr.predict(X_test_corr)
 
+print("First Model - Linear Regression: Using Correlation for Feature Selection")
+
 print('Mean Square Error Correlation Train', metrics.mean_squared_error(np.asarray(y_train_corr), y_corr_train_predicted))
 print('Mean Square Error Correlation Test', metrics.mean_squared_error(np.asarray(y_test_corr), y_predict_corr_test))
 
@@ -158,10 +160,12 @@ y_train_predicted_corr = poly_model_corr.predict(X_train_poly_corr)
 y_predict_test_corr = poly_model_corr.predict(
     poly_features_corr.transform(X_test_corr))
 
-print('Mean Square Error Corr Train Poly',
+print("\nSecond Model - Polynomial Regression: Using Correlation for Feature Selection")
+
+print('Mean Square Error Correlation Train ',
       metrics.mean_squared_error(np.asarray(y_train_corr), y_train_predicted_corr))
 
-print('Mean Square Error Corr Test Poly', metrics.mean_squared_error(np.asarray(y_test_corr), y_predict_test_corr))
+print('Mean Square Error Correlation Test ', metrics.mean_squared_error(np.asarray(y_test_corr), y_predict_test_corr))
 
 y_scaled = scaled_df['rating']
 x_scaled = scaled_df.drop(columns=['rating'])
@@ -220,8 +224,13 @@ y_backward_train_predicted = linear_model_backward.predict(x_after_feature_selec
 
 y_predict_backward_test = linear_model_backward.predict(x_after_feature_selection_backward_test)
 
+print("\nThird Model - Linear Regression: Using Forward Selection for Feature Selection")
+
 print('Linear Regression Mean Square Error Forward Train', metrics.mean_squared_error(np.asarray(y_train), y_forward_train_predicted))
 print('Linear Regression Mean Square Error Forward Test', metrics.mean_squared_error(np.asarray(y_test), y_predict_forward_test))
+
+
+print("\nFourth Model - Linear Regression: Using Backward Elimination for Feature Selection")
 
 print('Linear Regression Mean Square Error Backward Train', metrics.mean_squared_error(np.asarray(y_train), y_backward_train_predicted))
 print('Linear Regression Mean Square Error Backward Test', metrics.mean_squared_error(np.asarray(y_test), y_predict_backward_test))
@@ -246,13 +255,18 @@ y_predict_test_forward = poly_model_forward.predict(
 y_predict_test_backward = poly_model_backward.predict(
     poly_features_backward.transform(x_after_feature_selection_backward_test))
 
-print('Polynomial Regression Mean Square Error Forward Train Poly',
-      metrics.mean_squared_error(np.asarray(y_train), y_train_predicted_forward))
-print('Polynomial Regression Mean Square Error Forward Test Poly', metrics.mean_squared_error(np.asarray(y_test), y_predict_test_forward))
+print("\n----- Best Model -----")
+print("Fifth Model - Polynomial Regression: Using Forward Selection for Feature Selection")
 
-print('Polynomial Regression Mean Square Error Backward Train Poly',
+print('Polynomial Regression Mean Square Error Forward Train ',
+      metrics.mean_squared_error(np.asarray(y_train), y_train_predicted_forward))
+print('Polynomial Regression Mean Square Error Forward Test ', metrics.mean_squared_error(np.asarray(y_test), y_predict_test_forward))
+
+print("\nSixth Model - Polynomial Regression: Using Backward Elimination for Feature Selection")
+
+print('Polynomial Regression Mean Square Error Backward Train ',
       metrics.mean_squared_error(np.asarray(y_train), y_train_predicted_backward))
-print('Polynomial Regression Mean Square Error Backward Test Poly', metrics.mean_squared_error(np.asarray(y_test), y_predict_test_backward))
+print('Polynomial Regression Mean Square Error Backward Test ', metrics.mean_squared_error(np.asarray(y_test), y_predict_test_backward))
 
 
 # SVR
@@ -266,6 +280,8 @@ y_test_predict_forward = svr.predict(x_after_feature_selection_forward_test)
 train_mse_forward = mean_squared_error(y_train, y_train_predict_forward)
 test_mse_forward = mean_squared_error(y_test, y_test_predict_forward)
 
+print("\nSeventh Model - SVR: Using Forward Selection for Feature Selection")
+
 print("Train MSE Forward SVR:", train_mse_forward)
 print("Test MSE Forward SVR:", test_mse_forward)
 
@@ -276,6 +292,8 @@ y_test_predict_backward = svr.predict(x_after_feature_selection_backward_test)
 
 train_mse_backward = mean_squared_error(y_train, y_train_predict_backward)
 test_mse_backward = mean_squared_error(y_test, y_test_predict_backward)
+
+print("\nEighth Model - SVR: Using Backward Elimination for Feature Selection")
 
 print("Train MSE Backward SVR:", train_mse_backward)
 print("Test MSE Backward SVR:", test_mse_backward)
@@ -291,6 +309,8 @@ y_test_predict_forward_dt = dt_regressor.predict(x_after_feature_selection_forwa
 train_mse_forward_dt = mean_squared_error(y_train, y_train_predict_forward_dt)
 test_mse_forward_dt = mean_squared_error(y_test, y_test_predict_forward_dt)
 
+print("\nNinth Model - Decision Tree Regressor: Using Forward Selection for Feature Selection")
+
 print("Train MSE Forward DT:", train_mse_forward_dt)
 print("Test MSE Forward DT:", test_mse_forward_dt)
 
@@ -301,6 +321,8 @@ y_test_predict_backward_dt = dt_regressor.predict(x_after_feature_selection_back
 
 train_mse_backward_dt = mean_squared_error(y_train, y_train_predict_backward_dt)
 test_mse_backward_dt = mean_squared_error(y_test, y_test_predict_backward_dt)
+
+print("\nTenth Model - Decision Tree Regressor: Using Backward Elimination for Feature Selection")
 
 print("Train MSE Backward DT:", train_mse_backward_dt)
 print("Test MSE Backward DT:", test_mse_backward_dt)
