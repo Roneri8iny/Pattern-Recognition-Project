@@ -1,3 +1,5 @@
+import pickle
+import warnings
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
@@ -15,6 +17,9 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVR
 from sklearn.metrics import mean_squared_error
 
+warnings.filterwarnings("ignore", category=FutureWarning)
+
+
 ram_categories = ['4 GB', '8 GB', '16 GB', '32 GB']
 ssd_categories = ['0 GB', '128 GB', '256 GB', '512 GB', '1024 GB', '2048 GB', '3072 GB']
 hdd_categories = ['0 GB', '512 GB', '1024 GB', '2048 GB']
@@ -23,19 +28,69 @@ warranty_categories = ['No warranty', '1 year', '3 years', '2 years']
 generation_categories = ['4th', '7th', '8th', '9th', '10th', '11th', '12th']
 rating_categories = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars']
 
-label_encoder = LabelEncoder()
+
+#label_encoder = LabelEncoder()
 scaler = StandardScaler()
 
-ordinal_encoder_ram = OrdinalEncoder(categories=[ram_categories])
-ordinal_encoder_ssd = OrdinalEncoder(categories=[ssd_categories])
-ordinal_encoder_hdd = OrdinalEncoder(categories=[hdd_categories])
-ordinal_encoder_graphic_card_gb = OrdinalEncoder(categories=[graphic_card_gb_categories])
-ordinal_encoder_warranty = OrdinalEncoder(categories=[warranty_categories])
-ordinal_encoder_generation = OrdinalEncoder(categories=[generation_categories])
-ordinal_encoder_rating = OrdinalEncoder(categories=[rating_categories])
+label_encoder_brand = LabelEncoder()
+label_encoder_processor_brand = LabelEncoder()
+label_encoder_processor_name = LabelEncoder()
+label_encoder_ram_type = LabelEncoder()
+label_encoder_os = LabelEncoder()
+
+
+ordinal_encoder_ram = OrdinalEncoder(categories=[ram_categories], handle_unknown='use_encoded_value', unknown_value=-1)
+ordinal_encoder_ssd = OrdinalEncoder(categories=[ssd_categories],handle_unknown='use_encoded_value', unknown_value=-1)
+ordinal_encoder_hdd = OrdinalEncoder(categories=[hdd_categories],handle_unknown='use_encoded_value', unknown_value=-1)
+ordinal_encoder_graphic_card_gb = OrdinalEncoder(categories=[graphic_card_gb_categories],handle_unknown='use_encoded_value', unknown_value=-1)
+ordinal_encoder_warranty = OrdinalEncoder(categories=[warranty_categories], handle_unknown='use_encoded_value', unknown_value=-1)
+ordinal_encoder_generation = OrdinalEncoder(categories=[generation_categories], handle_unknown='use_encoded_value', unknown_value=-1)
+ordinal_encoder_rating = OrdinalEncoder(categories=[rating_categories], handle_unknown='use_encoded_value', unknown_value=-1)
 
 data = pd.read_csv("ElecDeviceRatingPrediction.csv")
+
 new_data = data
+# Price,  Number of Ratings , Number of Reviews ---> Numerical columns ----> mean 
+Price_Mean=new_data['Price'].mean()
+Number_of_Ratings_mean=new_data['Number of Ratings'].mean()
+Number_of_Reviews_mean=new_data['Number of Reviews'].mean()
+
+brand_mode = new_data['brand'].mode()
+processor_brand_mode = new_data['processor_brand'].mode()
+processor_name_mode = new_data['processor_name'].mode()
+processor_gnrtn_mode = new_data['processor_gnrtn'].mode()
+ram_gb_mode = new_data['ram_gb'].mode()
+ram_type_mode=new_data['ram_type'].mode()
+ssd_mode = new_data['ssd'].mode()
+hdd_mode = new_data['hdd'].mode()
+os_mode = new_data['os'].mode()
+graphic_card_gb_mode = new_data['graphic_card_gb'].mode()
+weight_mode = new_data['weight'].mode()
+warranty_mode = new_data['warranty'].mode()
+Touchscreen_mode=new_data['Touchscreen'].mode()
+msoffice_mode = new_data['msoffice'].mode()
+
+
+with open('Mean.pkl', 'wb') as f:
+    pickle.dump(Price_Mean, f)
+    pickle.dump(Number_of_Ratings_mean, f)
+    pickle.dump(Number_of_Reviews_mean, f)
+
+with open('Mode.pkl', 'wb') as f:
+    pickle.dump(brand_mode, f)
+    pickle.dump(processor_brand_mode, f)
+    pickle.dump(processor_name_mode, f)
+    pickle.dump(processor_gnrtn_mode, f)
+    pickle.dump(ram_gb_mode, f)
+    pickle.dump(ram_type_mode, f)
+    pickle.dump(ssd_mode, f)
+    pickle.dump(hdd_mode, f)
+    pickle.dump(os_mode, f)
+    pickle.dump(graphic_card_gb_mode, f)
+    pickle.dump(weight_mode, f)
+    pickle.dump(warranty_mode, f)
+    pickle.dump(Touchscreen_mode, f)
+    pickle.dump(msoffice_mode, f)
 
 # Replacing Not Available in generation column
 new_data['processor_gnrtn'] = new_data['processor_gnrtn'].replace("Not Available", pd.NA)
@@ -53,6 +108,16 @@ new_data['warranty'] = ordinal_encoder_warranty.fit_transform(new_data[['warrant
 new_data['processor_gnrtn'] = ordinal_encoder_generation.fit_transform(new_data[['processor_gnrtn']])
 new_data['rating'] = ordinal_encoder_rating.fit_transform(new_data[['rating']])
 
+with open('ordinal_encoding.pkl', 'wb') as f:
+    pickle.dump(ordinal_encoder_ram, f)
+    pickle.dump(ordinal_encoder_ssd, f)
+    pickle.dump(ordinal_encoder_hdd, f)
+    pickle.dump(ordinal_encoder_graphic_card_gb, f)
+    pickle.dump(ordinal_encoder_warranty, f)
+    pickle.dump(ordinal_encoder_generation, f)
+    pickle.dump(ordinal_encoder_rating, f)
+
+
 # From float to int64
 new_data['ram_gb'] = new_data['ram_gb'].astype('int64')
 new_data['ssd'] = new_data['ssd'].astype('int64')
@@ -66,6 +131,7 @@ new_data['rating'] = new_data['rating'].astype('int64')
 new_data = pd.get_dummies(new_data, columns=['Touchscreen'])
 new_data = pd.get_dummies(new_data, columns=['msoffice'])
 new_data = pd.get_dummies(new_data, columns=['weight'])
+
 
 
 new_data['Touchscreen_No'] = new_data['Touchscreen_No'].map({True: 1, False: 0})
@@ -82,17 +148,30 @@ new_data.drop(columns=['msoffice_No'], inplace=True)
 new_data.drop(columns=['Touchscreen_No'], inplace=True)
 
 # Brand , Processor brand, processor name, ram type, os --> Label Encoding
-new_data['brand'] = label_encoder.fit_transform(new_data['brand'])
-new_data['processor_brand'] = label_encoder.fit_transform(new_data['processor_brand'])
-new_data['processor_name'] = label_encoder.fit_transform(new_data['processor_name'])
-new_data['ram_type'] = label_encoder.fit_transform(new_data['ram_type'])
-new_data['os'] = label_encoder.fit_transform(new_data['os'])
+new_data['brand'] = label_encoder_brand.fit_transform(new_data['brand'])
+new_data['processor_brand'] = label_encoder_processor_brand.fit_transform(new_data['processor_brand'])
+new_data['processor_name'] = label_encoder_processor_name.fit_transform(new_data['processor_name'])
+new_data['ram_type'] = label_encoder_ram_type.fit_transform(new_data['ram_type'])
+new_data['os'] = label_encoder_os.fit_transform(new_data['os'])
+
+
+with open('Label_encoding.pkl', 'wb') as f:
+    pickle.dump(label_encoder_brand,f)
+    pickle.dump(label_encoder_processor_brand,f)
+    pickle.dump(label_encoder_processor_name,f)
+    pickle.dump(label_encoder_ram_type,f)
+    pickle.dump(label_encoder_os,f)
+
 
 
 # Scaling
-scaled_data = scaler.fit_transform(new_data)
-scaled_df = pd.DataFrame(scaled_data, columns=new_data.columns)
+X = new_data.drop('rating', axis=1)
+scaled_data = scaler.fit_transform(X)
+scaled_df = pd.DataFrame(scaled_data,columns =X.columns)
+scaled_df['rating'] = new_data['rating']
 
+with open('Scaling.pkl', 'wb') as f:
+    pickle.dump(scaler,f)
 
 # Visualization
 
@@ -125,10 +204,14 @@ top_feature = corr.index[abs((corr['rating']) > 0.1)]
 plt.subplots(figsize=(12, 8))
 top_corr = corr_data[top_feature].corr()
 sns.heatmap(top_corr, annot=True)
-plt.show()
+#plt.show()
 
 x_top_features = top_feature.drop('rating')
 x_corr = scaled_df[x_top_features]
+
+feature_column_corr = x_corr.columns
+with open('FeatureSelectionCorr.pkl', 'wb') as f:
+    pickle.dump(feature_column_corr,f)
 
 # Correlation Linear Regression
 y_scaled_corr = scaled_df['rating']
@@ -167,6 +250,10 @@ print('Mean Square Error Correlation Train ',
 
 print('Mean Square Error Correlation Test ', metrics.mean_squared_error(np.asarray(y_test_corr), y_predict_test_corr))
 
+
+
+
+
 y_scaled = scaled_df['rating']
 x_scaled = scaled_df.drop(columns=['rating'])
 
@@ -183,6 +270,8 @@ selector_backward_train.fit(X_train, y_train)
 
 selected_features_forward_train = selector_forward_train.k_feature_idx_
 selected_features_backward_train = selector_backward_train.k_feature_idx_
+
+
 
 x_after_feature_selection_forward_train = pd.DataFrame()
 x_after_feature_selection_backward_train = pd.DataFrame()
@@ -270,12 +359,12 @@ print('Polynomial Regression Mean Square Error Backward Test ', metrics.mean_squ
 
 
 # SVR
-svr = SVR(kernel='rbf')
-
+svr_forward = SVR(kernel='rbf')
+svr_backward = SVR(kernel='rbf')
 # Forward
-svr.fit(x_after_feature_selection_forward_train, y_train)
-y_train_predict_forward = svr.predict(x_after_feature_selection_forward_train)
-y_test_predict_forward = svr.predict(x_after_feature_selection_forward_test)
+svr_forward.fit(x_after_feature_selection_forward_train, y_train)
+y_train_predict_forward = svr_forward.predict(x_after_feature_selection_forward_train)
+y_test_predict_forward = svr_forward.predict(x_after_feature_selection_forward_test)
 
 train_mse_forward = mean_squared_error(y_train, y_train_predict_forward)
 test_mse_forward = mean_squared_error(y_test, y_test_predict_forward)
@@ -286,9 +375,9 @@ print("Train MSE Forward SVR:", train_mse_forward)
 print("Test MSE Forward SVR:", test_mse_forward)
 
 # Backward
-svr.fit(x_after_feature_selection_backward_train, y_train)
-y_train_predict_backward = svr.predict(x_after_feature_selection_backward_train)
-y_test_predict_backward = svr.predict(x_after_feature_selection_backward_test)
+svr_backward.fit(x_after_feature_selection_backward_train, y_train)
+y_train_predict_backward = svr_backward.predict(x_after_feature_selection_backward_train)
+y_test_predict_backward = svr_backward.predict(x_after_feature_selection_backward_test)
 
 train_mse_backward = mean_squared_error(y_train, y_train_predict_backward)
 test_mse_backward = mean_squared_error(y_test, y_test_predict_backward)
@@ -299,12 +388,13 @@ print("Train MSE Backward SVR:", train_mse_backward)
 print("Test MSE Backward SVR:", test_mse_backward)
 
 # Decision Tree Regression
-dt_regressor = DecisionTreeRegressor()
+dt_regressor_forward = DecisionTreeRegressor()
+dt_regressor_backward = DecisionTreeRegressor()
 
 # Forward
-dt_regressor.fit(x_after_feature_selection_forward_train, y_train)
-y_train_predict_forward_dt = dt_regressor.predict(x_after_feature_selection_forward_train)
-y_test_predict_forward_dt = dt_regressor.predict(x_after_feature_selection_forward_test)
+dt_regressor_forward.fit(x_after_feature_selection_forward_train, y_train)
+y_train_predict_forward_dt = dt_regressor_forward.predict(x_after_feature_selection_forward_train)
+y_test_predict_forward_dt = dt_regressor_forward.predict(x_after_feature_selection_forward_test)
 
 train_mse_forward_dt = mean_squared_error(y_train, y_train_predict_forward_dt)
 test_mse_forward_dt = mean_squared_error(y_test, y_test_predict_forward_dt)
@@ -315,9 +405,9 @@ print("Train MSE Forward DT:", train_mse_forward_dt)
 print("Test MSE Forward DT:", test_mse_forward_dt)
 
 # Backward
-dt_regressor.fit(x_after_feature_selection_backward_train, y_train)
-y_train_predict_backward_dt = dt_regressor.predict(x_after_feature_selection_backward_train)
-y_test_predict_backward_dt = dt_regressor.predict(x_after_feature_selection_backward_test)
+dt_regressor_backward.fit(x_after_feature_selection_backward_train, y_train)
+y_train_predict_backward_dt = dt_regressor_backward.predict(x_after_feature_selection_backward_train)
+y_test_predict_backward_dt = dt_regressor_backward.predict(x_after_feature_selection_backward_test)
 
 train_mse_backward_dt = mean_squared_error(y_train, y_train_predict_backward_dt)
 test_mse_backward_dt = mean_squared_error(y_test, y_test_predict_backward_dt)
@@ -328,3 +418,39 @@ print("Train MSE Backward DT:", train_mse_backward_dt)
 print("Test MSE Backward DT:", test_mse_backward_dt)
 
 
+with open('FeatureSelectionPolyCorr.pkl', 'wb') as f:
+    pickle.dump(poly_features_corr,f)
+    
+with open('FeatureSelectionForward.pkl', 'wb') as f:
+    pickle.dump(selected_features_forward_train,f)
+
+
+with open('FeatureSelectionBackward.pkl', 'wb') as f:
+    pickle.dump(selected_features_backward_train,f)
+
+
+with open('poly_features_forward.pkl', 'wb') as f:
+    pickle.dump(poly_features_forward,f)
+
+
+with open('poly_features_backward.pkl', 'wb') as f:
+    pickle.dump(poly_features_backward,f)
+
+poly_features_forward
+with open('MyTrainModel.pkl', 'wb') as f:
+
+    pickle.dump(linear_model_corr, f)
+    pickle.dump(poly_model_corr,f)
+
+    pickle.dump(linear_model_forward, f)
+    pickle.dump(linear_model_backward,f)
+
+    pickle.dump(poly_model_forward, f)
+    pickle.dump(poly_model_backward,f)
+
+    pickle.dump(svr_forward, f)
+    pickle.dump(svr_backward, f)
+
+    pickle.dump(dt_regressor_forward,f)
+    pickle.dump(dt_regressor_backward,f)
+    
