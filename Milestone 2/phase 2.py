@@ -178,20 +178,20 @@ selected_features_test = categorical_data_df_test.columns[selected_feature_indic
 print("Selected Features Train:")
 print(selected_features_test)
 
-logistic_model_forward = linear_model.LogisticRegression()
-logistic_model_backward = linear_model.LogisticRegression()
-
-logistic_model_forward.fit(X_selected_train, y_train)
-y_forward_train_predicted = logistic_model_forward.predict(X_selected_train)
-
-y_predict_forward_test = logistic_model_forward.predict(X_selected_test)
-
-print("First Model - Logistic Regression: Using Information Gain for Feature Selection")
-
-print('Logistic Regression Accuracy Forward Train',
-      metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted))
-print('Logistic Regression Accuracy Forward Test',
-      metrics.accuracy_score(np.asarray(y_test), y_predict_forward_test))
+# logistic_model_forward = linear_model.LogisticRegression()
+# logistic_model_backward = linear_model.LogisticRegression()
+#
+# logistic_model_forward.fit(X_selected_train, y_train)
+# y_forward_train_predicted = logistic_model_forward.predict(X_selected_train)
+#
+# y_predict_forward_test = logistic_model_forward.predict(X_selected_test)
+#
+# # print("First Model - Logistic Regression: Using Information Gain for Feature Selection")
+#
+# print('Logistic Regression Accuracy Train',
+#       metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted))
+# print('Logistic Regression Accuracy Test',
+#       metrics.accuracy_score(np.asarray(y_test), y_predict_forward_test))
 
 # Numerical vs Categorical ---> Use ANOVA or KENDALL's
 # ANOVA
@@ -238,19 +238,18 @@ all_selectedFeatures_df_test = pd.concat([X_selected_test_df, X_selected_Anova_t
 all_selectedFeatures_df_train.to_csv('SelectedTrain.csv', index=False)
 all_selectedFeatures_df_test.to_csv('SelectedTest.csv', index=False)
 
-logistic_model_forward = linear_model.LogisticRegression()
-logistic_model_backward = linear_model.LogisticRegression()
+logistic_model = linear_model.LogisticRegression(C=0.1)
 
-logistic_model_forward.fit(all_selectedFeatures_df_train, y_train)
-y_forward_train_predicted = logistic_model_forward.predict(all_selectedFeatures_df_train)
+logistic_model.fit(all_selectedFeatures_df_train, y_train)
+y_forward_train_predicted = logistic_model.predict(all_selectedFeatures_df_train)
 
-y_predict_forward_test = logistic_model_forward.predict(all_selectedFeatures_df_test)
+y_predict_forward_test = logistic_model.predict(all_selectedFeatures_df_test)
 
-print("First Model - Logistic Regression: Using Information Gain for Feature Selection")
+# print("First Model - Logistic Regression: Using Information Gain for Feature Selection")
 
-print('Logistic Regression Accuracy Forward Train',
+print('Logistic Regression Accuracy Train',
       metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted))
-print('Logistic Regression Accuracy Forward Test',
+print('Logistic Regression Accuracy Test',
       metrics.accuracy_score(np.asarray(y_test), y_predict_forward_test))
 
 classifier = SVC()
@@ -263,11 +262,11 @@ y_predict_test = classifier.predict(all_selectedFeatures_df_test)
 #
 # y_predict_backward_test = logistic_model_backward.predict(x_after_feature_selection_backward_test)
 
-print('SVC Accuracy Forward Train', metrics.accuracy_score(np.asarray(y_train), y_train_predicted))
-print('SVC Accuracy Forward Test', metrics.accuracy_score(np.asarray(y_test), y_predict_test))
+print('SVC Accuracy Train', metrics.accuracy_score(np.asarray(y_train), y_train_predicted))
+print('SVC Accuracy Test', metrics.accuracy_score(np.asarray(y_test), y_predict_test))
 
 # Decision Tree
-dt = DecisionTreeClassifier()
+dt = DecisionTreeClassifier(max_depth=10)
 
 dt.fit(all_selectedFeatures_df_train, y_train)
 
@@ -324,7 +323,7 @@ print("Test Accuracy XGBOOST:", test_accuracy_xgb)
 
 # AdaBoost
 
-ada = AdaBoostClassifier(n_estimators=50, random_state=42)
+ada = AdaBoostClassifier(n_estimators=250, random_state=42)
 
 ada.fit(all_selectedFeatures_df_train, y_train)
 
@@ -338,12 +337,25 @@ print("Train Accuracy AdaBoost:", train_accuracy_ada)
 print("Test Accuracy AdaBoost:", test_accuracy_ada)
 
 # Voting
-base_learners = [
+# Adaboost + XGBoost --> Done , AdaBoost + Decision Tree --> Done, XGBOOST + Decision Tree ,
+# Decision Tree + SVC --> Done, Decision Tree + Logistic Regression --> Done , Decision Tree + KNN
+# base_learners_voting = [
+#     ('ada', AdaBoostClassifier(n_estimators=50, random_state=42)),
+#     ('xgb', xgb.XGBClassifier())
+# ]
+
+# base_learners_voting = [
+#     ('ada', AdaBoostClassifier(n_estimators=50, random_state=42)),
+#     ('dt', DecisionTreeClassifier())
+# ]
+
+base_learners_voting = [
     ('ada', AdaBoostClassifier(n_estimators=50, random_state=42)),
-    ('xgb', xgb.XGBClassifier())
+    ('xgb', xgb.XGBClassifier()),
+    ('dt', DecisionTreeClassifier())
 ]
 
-votingModel = VotingClassifier(estimators=base_learners, voting='hard')
+votingModel = VotingClassifier(estimators=base_learners_voting, voting='hard')
 
 votingModel.fit(all_selectedFeatures_df_train, y_train)
 
@@ -353,18 +365,21 @@ y_test_predict_voting = votingModel.predict(all_selectedFeatures_df_test)
 train_accuracy_voting = accuracy_score(y_train, y_train_predict_voting)
 test_accuracy_voting = accuracy_score(y_test, y_test_predict_voting)
 
-print("Train Accuracy Voting:", train_accuracy_voting)
-print("Test Accuracy Voting:", test_accuracy_voting)
+print(f"Train Accuracy Voting with :", train_accuracy_voting)
+print(f"Test Accuracy Voting :", test_accuracy_voting)
 
 # Stacking
-base_learners = [
-    ('ada', AdaBoostClassifier(n_estimators=50, random_state=42)),
-    ('xgb', xgb.XGBClassifier())
+
+base_learners_stacking = [
+    # ('ada', AdaBoostClassifier(n_estimators=50, random_state=42)),
+    ('xgb', xgb.XGBClassifier()),
+    ('dt', DecisionTreeClassifier())
+    # ('rf', RandomForestClassifier(n_estimators=100, random_state=42))
 ]
 
-meta_learner = DecisionTreeClassifier()
+meta_learner = AdaBoostClassifier(n_estimators=50, random_state=42)
 
-stackingModel = StackingClassifier(estimators=base_learners, final_estimator=meta_learner)
+stackingModel = StackingClassifier(estimators=base_learners_stacking, final_estimator=meta_learner)
 
 stackingModel.fit(all_selectedFeatures_df_train, y_train)
 
