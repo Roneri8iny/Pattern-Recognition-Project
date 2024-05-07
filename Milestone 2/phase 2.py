@@ -7,7 +7,15 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from mlxtend.feature_selection import SequentialFeatureSelector
 from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
+from sklearn.ensemble import StackingClassifier
+import xgboost as xgb
+import warnings
 from sklearn.preprocessing import PolynomialFeatures
 import matplotlib.pyplot as plt
 from sklearn import metrics
@@ -15,8 +23,9 @@ import seaborn as sns
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVC
 from sklearn.metrics import mean_squared_error
-from sklearn.feature_selection import SelectKBest, mutual_info_classif
+from sklearn.feature_selection import SelectKBest, mutual_info_classif, f_classif
 
+warnings.filterwarnings("ignore", category=FutureWarning)
 data = pd.read_csv("ElecDeviceRatingPrediction_Milestone2.csv")
 new_data = data
 
@@ -109,36 +118,61 @@ scaled_df = pd.DataFrame(scaled_data, columns=x_before_scaling.columns)
 y = new_data['rating']
 x_scaled = scaled_df
 
-# Train Test Split
-X_train, X_test, y_train, y_test = train_test_split(x_scaled, y, test_size=0.20, shuffle=True, random_state=10)
+# categorical_data_df = pd.concat([categorical_data_df, new_data['rating']], axis=1)
+# categorical_data_df.to_csv('categorical.csv', index=False)
 
-mutual_info_scores = mutual_info_classif(X_train, y_train)
+# Train Test Split --> Numerical
+X_train, X_test, y_train, y_test = train_test_split(x_scaled, y, test_size=0.20,
+                                                    shuffle=True,
+                                                    random_state=10)
 
+# Train Test Split --> Categorical X_train_categorical, X_test_categorical, y_train_categorical, y_test_categorical =
+# train_test_split(categorical_data_df, y, test_size=0.20, shuffle=True, random_state=10)
+
+# Train Numerical
+selected_numerical_columns = ['Price', 'Number of Ratings', 'Number of Reviews']
+numerical_data_df_train = X_train[selected_numerical_columns].copy()
+
+# Test Numerical
+numerical_data_df_test = X_test[selected_numerical_columns].copy()
+
+# numerical_data_df = pd.concat([numerical_data_df, new_data['rating']], axis=1)
+# numerical_data_df.to_csv('numerical.csv', index=False)
+
+selected_categorical_columns = ['brand', 'processor_brand', 'processor_name', 'processor_gnrtn', 'ram_gb', 'ram_type',
+                                'ssd', 'hdd', 'os', 'graphic_card_gb', 'warranty', 'Touchscreen_Yes',
+                                'msoffice_Yes', 'weight_Casual', 'weight_Gaming', 'weight_ThinNlight']
+# Train Categorical
+categorical_data_df_train = X_train[selected_categorical_columns].copy()
+
+# Test Categorical
+categorical_data_df_test = X_test[selected_categorical_columns].copy()
+
+# Categorical vs Categorical --> Use Chi-Squared or Mutual Info
+np.random.seed(41)
+# # Information Gain
 # Train
-
 k = 5
 selector = SelectKBest(mutual_info_classif, k=k)
-X_selected = selector.fit_transform(X_train, y_train)
+X_selected_train = selector.fit_transform(categorical_data_df_train, y_train)
 
 # Get the indices of the selected features
 selected_feature_indices = selector.get_support(indices=True)
-selected_features = X_train.columns[selected_feature_indices]  # Assuming X_train is a DataFrame
+selected_features = categorical_data_df_train.columns[selected_feature_indices]  # Assuming X_train is a DataFrame
 
 # Print selected features
 print("Selected Features Train:")
 print(selected_features)
 
-
-
 # Test
-
 k = 5
 selector_test = SelectKBest(mutual_info_classif, k=k)
-X_selected_test = selector_test.fit_transform(X_test, y_test)
+X_selected_test = selector_test.fit_transform(categorical_data_df_test, y_test)
 
 # Get the indices of the selected features
 selected_feature_indices_test = selector.get_support(indices=True)
-selected_features_test = X_train.columns[selected_feature_indices_test]  # Assuming X_train is a DataFrame
+selected_features_test = categorical_data_df_test.columns[selected_feature_indices_test]  # Assuming X_train is a
+# DataFrame
 
 # Print selected features
 print("Selected Features Train:")
@@ -147,114 +181,198 @@ print(selected_features_test)
 logistic_model_forward = linear_model.LogisticRegression()
 logistic_model_backward = linear_model.LogisticRegression()
 
-logistic_model_forward.fit(X_selected, y_train)
-y_forward_train_predicted = logistic_model_forward.predict(X_selected)
+logistic_model_forward.fit(X_selected_train, y_train)
+y_forward_train_predicted = logistic_model_forward.predict(X_selected_train)
 
 y_predict_forward_test = logistic_model_forward.predict(X_selected_test)
 
-classifier = SVC()
+print("First Model - Logistic Regression: Using Information Gain for Feature Selection")
 
-classifier.fit(X_selected, y_train)
-y_train_predicted = classifier.predict(X_selected)
-y_predict_test = classifier.predict(X_selected_test)
-# logistic_model_backward.fit(x_after_feature_selection_backward_train, y_train)
-# y_backward_train_predicted = logistic_model_backward.predict(x_after_feature_selection_backward_train)
-#
-# y_predict_backward_test = logistic_model_backward.predict(x_after_feature_selection_backward_test)
+print('Logistic Regression Accuracy Forward Train',
+      metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted))
+print('Logistic Regression Accuracy Forward Test',
+      metrics.accuracy_score(np.asarray(y_test), y_predict_forward_test))
 
-print("First Model - Logistic Regression: Using Forward Selection for Feature Selection")
-
-print('Logistic Regression Accuracy Forward Train', metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted))
-print('Logistic Regression Accuracy Forward Test', metrics.accuracy_score(np.asarray(y_test), y_predict_forward_test))
-
-print("First Model - SVC: Using Forward Selection for Feature Selection")
-
-print('SVC Accuracy Forward Train', metrics.accuracy_score(np.asarray(y_train), y_train_predicted))
-print('SVC Accuracy Forward Test', metrics.accuracy_score(np.asarray(y_test), y_predict_test))
-
-featureSelectionClassifier = SVC()
-scoringFunction = 'accuracy'
-selector_forward_train = SequentialFeatureSelector(featureSelectionClassifier, forward=True, k_features='best',
-                                                   scoring=scoringFunction, cv=5)
-selector_forward_train.fit(X_train, y_train)
-
-selector_backward_train = SequentialFeatureSelector(featureSelectionClassifier, forward=False, k_features='best',
-                                                    scoring=scoringFunction, cv=5)
-selector_backward_train.fit(X_train, y_train)
-
-selected_features_forward_train = selector_forward_train.k_feature_idx_
-selected_features_backward_train = selector_backward_train.k_feature_idx_
-
-x_after_feature_selection_forward_train = pd.DataFrame()
-x_after_feature_selection_backward_train = pd.DataFrame()
-x_after_feature_selection_forward_test = pd.DataFrame()
-x_after_feature_selection_backward_test = pd.DataFrame()
-
+# Numerical vs Categorical ---> Use ANOVA or KENDALL's
+# ANOVA
 # Train
-for column in selected_features_forward_train:
-    column_names_forward = x_scaled.columns[column]
-    column_name = X_train.columns[column]
-    column_values_train = X_train.iloc[:, column]
-    column_values_test = X_test.iloc[:, column]
-    x_after_feature_selection_forward_train[column_name] = column_values_train
-    x_after_feature_selection_forward_test[column_name] = column_values_test
+# X_train_numerical, X_test_numerical, y_train_numerical, y_test_numerical
+f_values = f_classif(numerical_data_df_train, y_train)[0]
 
-# x_after_feature_selection_forward_test.to_csv('forward.csv', index=False)
+k = 2
+selector = SelectKBest(f_classif, k=k)
+X_selected_Anova_train = selector.fit_transform(numerical_data_df_train, y_train)
 
-for column in selected_features_backward_train:
-    column_names_backward = x_scaled.columns[column]
-    column_name = X_train.columns[column]
-    column_values_train = X_train.iloc[:, column]
-    column_values_test = X_test.iloc[:, column]
-    x_after_feature_selection_backward_train[column_name] = column_values_train
-    x_after_feature_selection_backward_test[column_name] = column_values_test
+selected_feature_indices_anova_train = selector.get_support(indices=True)
+selected_features_anova = numerical_data_df_train.columns[selected_feature_indices_anova_train]
 
-# SVC - Logistic - Decision Tree - Random Forest - K-Nearest Neighbors - Naive Bayes
+print("Selected Features ANOVA Train:")
+print(selected_features_anova)
+
+# Test
+
+f_values = f_classif(numerical_data_df_test, y_test)[0]
+
+k = 2
+selector = SelectKBest(f_classif, k=k)
+X_selected_Anova_test = selector.fit_transform(numerical_data_df_test, y_test)
+
+selected_feature_indices_anova_test = selector.get_support(indices=True)
+selected_features_anova_test = numerical_data_df_test.columns[selected_feature_indices_anova_test]
+
+print("Selected Features ANOVA Test:")
+print(selected_features_anova_test)
+
+X_selected_train_df = pd.DataFrame(X_selected_train)
+X_selected_train_df.columns = selected_features
+X_selected_Anova_train_df = pd.DataFrame(X_selected_Anova_train)
+X_selected_Anova_train_df.columns = selected_features_anova
+all_selectedFeatures_df_train = pd.concat([X_selected_train_df, X_selected_Anova_train_df], axis=1)
+
+X_selected_test_df = pd.DataFrame(X_selected_test)
+X_selected_test_df.columns = selected_features_test
+X_selected_Anova_test_df = pd.DataFrame(X_selected_Anova_test)
+X_selected_Anova_test_df.columns = selected_features_anova_test
+all_selectedFeatures_df_test = pd.concat([X_selected_test_df, X_selected_Anova_test_df], axis=1)
+
+all_selectedFeatures_df_train.to_csv('SelectedTrain.csv', index=False)
+all_selectedFeatures_df_test.to_csv('SelectedTest.csv', index=False)
 
 logistic_model_forward = linear_model.LogisticRegression()
 logistic_model_backward = linear_model.LogisticRegression()
 
-logistic_model_forward.fit(x_after_feature_selection_forward_train, y_train)
-y_forward_train_predicted = logistic_model_forward.predict(x_after_feature_selection_forward_train)
+logistic_model_forward.fit(all_selectedFeatures_df_train, y_train)
+y_forward_train_predicted = logistic_model_forward.predict(all_selectedFeatures_df_train)
 
-y_predict_forward_test = logistic_model_forward.predict(x_after_feature_selection_forward_test)
+y_predict_forward_test = logistic_model_forward.predict(all_selectedFeatures_df_test)
 
-logistic_model_backward.fit(x_after_feature_selection_backward_train, y_train)
-y_backward_train_predicted = logistic_model_backward.predict(x_after_feature_selection_backward_train)
+print("First Model - Logistic Regression: Using Information Gain for Feature Selection")
 
-y_predict_backward_test = logistic_model_backward.predict(x_after_feature_selection_backward_test)
+print('Logistic Regression Accuracy Forward Train',
+      metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted))
+print('Logistic Regression Accuracy Forward Test',
+      metrics.accuracy_score(np.asarray(y_test), y_predict_forward_test))
 
-print("First Model - Logistic Regression: Using Forward Selection for Feature Selection")
+classifier = SVC()
 
-print('Logistic Regression Accuracy Forward Train', metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted))
-print('Logistic Regression Accuracy Forward Test', metrics.accuracy_score(np.asarray(y_test), y_predict_forward_test))
-
-
-print("\nSecond Model - Logistic Regression: Using Backward Elimination for Feature Selection")
-
-print('Logistic Regression Accuracy Backward Train', metrics.accuracy_score(np.asarray(y_train), y_backward_train_predicted))
-print('Logistic Regression Accuracy Backward Test', metrics.accuracy_score(np.asarray(y_test), y_predict_backward_test))
-
-# logistic_model_forward = linear_model.LogisticRegression()
-# logistic_model_backward = linear_model.LogisticRegression()
-#
-# logistic_model_forward.fit(x_after_feature_selection_forward_train, y_train)
-# y_forward_train_predicted = logistic_model_forward.predict(x_after_feature_selection_forward_train)
-#
-# y_predict_forward_test = logistic_model_forward.predict(x_after_feature_selection_forward_test)
-#
+classifier.fit(all_selectedFeatures_df_train, y_train)
+y_train_predicted = classifier.predict(all_selectedFeatures_df_train)
+y_predict_test = classifier.predict(all_selectedFeatures_df_test)
 # logistic_model_backward.fit(x_after_feature_selection_backward_train, y_train)
 # y_backward_train_predicted = logistic_model_backward.predict(x_after_feature_selection_backward_train)
 #
 # y_predict_backward_test = logistic_model_backward.predict(x_after_feature_selection_backward_test)
-#
-# print("First Model - Logistic Regression: Using Forward Selection for Feature Selection")
-#
-# print('Logistic Regression Accuracy Forward Train', metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted))
-# print('Logistic Regression Accuracy Forward Test', metrics.accuracy_score(np.asarray(y_test), y_predict_forward_test))
-#
-#
-# print("\nSecond Model - Logistic Regression: Using Backward Elimination for Feature Selection")
-#
-# print('Logistic Regression Accuracy Backward Train', metrics.accuracy_score(np.asarray(y_train), y_backward_train_predicted))
-# print('Logistic Regression Accuracy Backward Test', metrics.accuracy_score(np.asarray(y_test), y_predict_backward_test))
+
+print('SVC Accuracy Forward Train', metrics.accuracy_score(np.asarray(y_train), y_train_predicted))
+print('SVC Accuracy Forward Test', metrics.accuracy_score(np.asarray(y_test), y_predict_test))
+
+# Decision Tree
+dt = DecisionTreeClassifier()
+
+dt.fit(all_selectedFeatures_df_train, y_train)
+
+y_train_predict_dt = dt.predict(all_selectedFeatures_df_train)
+y_test_predict_dt = dt.predict(all_selectedFeatures_df_test)
+
+train_accuracy_dt = accuracy_score(y_train, y_train_predict_dt)
+test_accuracy_dt = accuracy_score(y_test, y_test_predict_dt)
+
+print("Train Accuracy DT:", train_accuracy_dt)
+print("Test Accuracy DT:", test_accuracy_dt)
+
+# Random Forest
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+
+rf.fit(all_selectedFeatures_df_train, y_train)
+
+y_train_predict_rf = rf.predict(all_selectedFeatures_df_train)
+y_test_predict_rf = rf.predict(all_selectedFeatures_df_test)
+
+train_accuracy_rf = accuracy_score(y_train, y_train_predict_rf)
+test_accuracy_rf = accuracy_score(y_test, y_test_predict_rf)
+
+print("Train Accuracy Random Forest:", train_accuracy_rf)
+print("Test Accuracy Random Forest:", test_accuracy_rf)
+
+# KNN
+knn = KNeighborsClassifier(n_neighbors=5)
+
+knn.fit(all_selectedFeatures_df_train, y_train)
+
+y_train_predict_knn = knn.predict(all_selectedFeatures_df_train)
+y_test_predict_knn = knn.predict(all_selectedFeatures_df_test)
+
+train_accuracy_knn = accuracy_score(y_train, y_train_predict_knn)
+test_accuracy_knn = accuracy_score(y_test, y_test_predict_knn)
+
+print("Train Accuracy KNN:", train_accuracy_knn)
+print("Test Accuracy KNN:", test_accuracy_knn)
+
+# XGBOOST
+xgboost = xgb.XGBClassifier()
+
+xgboost.fit(all_selectedFeatures_df_train, y_train)
+
+y_train_predict_xgb = xgboost.predict(all_selectedFeatures_df_train)
+y_test_predict_xgb = xgboost.predict(all_selectedFeatures_df_test)
+
+train_accuracy_xgb = accuracy_score(y_train, y_train_predict_xgb)
+test_accuracy_xgb = accuracy_score(y_test, y_test_predict_xgb)
+
+print("Train Accuracy XGBOOST:", train_accuracy_xgb)
+print("Test Accuracy XGBOOST:", test_accuracy_xgb)
+
+# AdaBoost
+
+ada = AdaBoostClassifier(n_estimators=50, random_state=42)
+
+ada.fit(all_selectedFeatures_df_train, y_train)
+
+y_train_predict_ada = ada.predict(all_selectedFeatures_df_train)
+y_test_predict_ada = ada.predict(all_selectedFeatures_df_test)
+
+train_accuracy_ada = accuracy_score(y_train, y_train_predict_ada)
+test_accuracy_ada = accuracy_score(y_test, y_test_predict_ada)
+
+print("Train Accuracy AdaBoost:", train_accuracy_ada)
+print("Test Accuracy AdaBoost:", test_accuracy_ada)
+
+# Voting
+base_learners = [
+    ('ada', AdaBoostClassifier(n_estimators=50, random_state=42)),
+    ('xgb', xgb.XGBClassifier())
+]
+
+votingModel = VotingClassifier(estimators=base_learners, voting='hard')
+
+votingModel.fit(all_selectedFeatures_df_train, y_train)
+
+y_train_predict_voting = votingModel.predict(all_selectedFeatures_df_train)
+y_test_predict_voting = votingModel.predict(all_selectedFeatures_df_test)
+
+train_accuracy_voting = accuracy_score(y_train, y_train_predict_voting)
+test_accuracy_voting = accuracy_score(y_test, y_test_predict_voting)
+
+print("Train Accuracy Voting:", train_accuracy_voting)
+print("Test Accuracy Voting:", test_accuracy_voting)
+
+# Stacking
+base_learners = [
+    ('ada', AdaBoostClassifier(n_estimators=50, random_state=42)),
+    ('xgb', xgb.XGBClassifier())
+]
+
+meta_learner = DecisionTreeClassifier()
+
+stackingModel = StackingClassifier(estimators=base_learners, final_estimator=meta_learner)
+
+stackingModel.fit(all_selectedFeatures_df_train, y_train)
+
+y_train_predict_stacking = stackingModel.predict(all_selectedFeatures_df_train)
+y_test_predict_stacking = stackingModel.predict(all_selectedFeatures_df_test)
+
+train_accuracy_stacking = accuracy_score(y_train, y_train_predict_stacking)
+test_accuracy_stacking = accuracy_score(y_test, y_test_predict_stacking)
+
+print("Train Accuracy Stacking:", train_accuracy_stacking)
+print("Test Accuracy Stacking:", test_accuracy_stacking)
