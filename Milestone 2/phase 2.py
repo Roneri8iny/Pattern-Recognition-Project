@@ -37,7 +37,22 @@ warranty_categories = ['No warranty', '1 year', '3 years', '2 years']
 generation_categories = ['4th', '7th', '8th', '9th', '10th', '11th', '12th']
 # rating_categories = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars']
 
-label_encoder = LabelEncoder()
+label_encoder = LabelEncoder()  # --> validation
+label_encoder_brand = LabelEncoder()
+label_encoder_processor_brand = LabelEncoder()
+label_encoder_processor_name = LabelEncoder()
+label_encoder_ram_type = LabelEncoder()
+label_encoder_os = LabelEncoder()
+label_encoder_rating = LabelEncoder()
+# Column name --> label encoder
+# X_train['brand'] = label_encoder.fit_transform(X_train['brand'])
+# X_train['processor_brand'] = label_encoder.fit_transform(X_train['processor_brand'])
+# X_train['processor_name'] = label_encoder.fit_transform(X_train['processor_name'])
+# X_train['ram_type'] = label_encoder.fit_transform(X_train['ram_type'])
+# X_train['os'] = label_encoder.fit_transform(X_train['os'])
+labelEncodersTrainDict = {'brand': label_encoder_brand, 'processor_brand': label_encoder_processor_brand,
+                          'processor_name': label_encoder_processor_name, 'ram_type': label_encoder_ram_type,
+                          'os': label_encoder_os}
 scaler = StandardScaler()
 
 ordinal_encoder_ram = OrdinalEncoder(categories=[ram_categories])
@@ -46,95 +61,161 @@ ordinal_encoder_hdd = OrdinalEncoder(categories=[hdd_categories])
 ordinal_encoder_graphic_card_gb = OrdinalEncoder(categories=[graphic_card_gb_categories])
 ordinal_encoder_warranty = OrdinalEncoder(categories=[warranty_categories])
 ordinal_encoder_generation = OrdinalEncoder(categories=[generation_categories])
-# ordinal_encoder_rating = OrdinalEncoder(categories=[rating_categories])
-for column in new_data.columns:
-    unique_values = new_data[column].unique()
-    print(f"Unique values for column '{column}':")
-    print(unique_values)
-    print()
 
+X = new_data.drop(columns=['rating'])
+y = new_data['rating']
+# Train Test Split --> Numerical
+X_train_initial, X_test_forbidden, y_train_initial, y_test_forbidden = train_test_split(X, y, test_size=0.20,
+                                                                                        shuffle=True,
+                                                                                        random_state=10)
+
+X_train, X_validation, y_train, y_validation = train_test_split(X_train_initial, y_train_initial, test_size=0.20,
+                                                                shuffle=True,
+                                                                random_state=10)
+
+# ordinal_encoder_rating = OrdinalEncoder(categories=[rating_categories])
+# for column in new_data.columns:
+#     unique_values = new_data[column].unique()
+#     print(f"Unique values for column '{column}':")
+#     print(unique_values)
+#     print()
+
+# Train
 # Replacing Not Available in generation column
-new_data['processor_gnrtn'] = new_data['processor_gnrtn'].replace("Not Available", pd.NA)
-mode_value = new_data['processor_gnrtn'].mode()[0]
-new_data['processor_gnrtn'] = new_data['processor_gnrtn'].fillna(mode_value)
+X_train['processor_gnrtn'] = X_train['processor_gnrtn'].replace("Not Available", pd.NA)
+mode_value = X_train['processor_gnrtn'].mode()[0]
+X_train['processor_gnrtn'] = X_train['processor_gnrtn'].fillna(mode_value)
 
 # ram-gb ssd hdd graphic-card warranty generation --> Ordinal Encoding
 
-new_data['ram_gb'] = ordinal_encoder_ram.fit_transform(new_data[['ram_gb']])
-new_data['ssd'] = ordinal_encoder_ssd.fit_transform(new_data[['ssd']])
-new_data['hdd'] = ordinal_encoder_hdd.fit_transform(new_data[['hdd']])
-new_data['graphic_card_gb'] = ordinal_encoder_graphic_card_gb.fit_transform(new_data[['graphic_card_gb']])
-new_data['warranty'] = ordinal_encoder_warranty.fit_transform(new_data[['warranty']])
-new_data['processor_gnrtn'] = ordinal_encoder_generation.fit_transform(new_data[['processor_gnrtn']])
+X_train['ram_gb'] = ordinal_encoder_ram.fit_transform(X_train[['ram_gb']])
+X_train['ssd'] = ordinal_encoder_ssd.fit_transform(X_train[['ssd']])
+X_train['hdd'] = ordinal_encoder_hdd.fit_transform(X_train[['hdd']])
+X_train['graphic_card_gb'] = ordinal_encoder_graphic_card_gb.fit_transform(X_train[['graphic_card_gb']])
+X_train['warranty'] = ordinal_encoder_warranty.fit_transform(X_train[['warranty']])
+X_train['processor_gnrtn'] = ordinal_encoder_generation.fit_transform(X_train[['processor_gnrtn']])
 # new_data['rating'] = ordinal_encoder_rating.fit_transform(new_data[['rating']])
 
 # From float to int64
-new_data['ram_gb'] = new_data['ram_gb'].astype('int64')
-new_data['ssd'] = new_data['ssd'].astype('int64')
-new_data['hdd'] = new_data['hdd'].astype('int64')
-new_data['graphic_card_gb'] = new_data['graphic_card_gb'].astype('int64')
-new_data['warranty'] = new_data['warranty'].astype('int64')
-new_data['processor_gnrtn'] = new_data['processor_gnrtn'].astype('int64')
+X_train['ram_gb'] = X_train['ram_gb'].astype('int64')
+X_train['ssd'] = X_train['ssd'].astype('int64')
+X_train['hdd'] = X_train['hdd'].astype('int64')
+X_train['graphic_card_gb'] = X_train['graphic_card_gb'].astype('int64')
+X_train['warranty'] = X_train['warranty'].astype('int64')
+X_train['processor_gnrtn'] = X_train['processor_gnrtn'].astype('int64')
 # new_data['rating'] = new_data['rating'].astype('int64')
 
 # Touch msoffice weight --> One Hot Encoding
-new_data = pd.get_dummies(new_data, columns=['Touchscreen'])
-new_data = pd.get_dummies(new_data, columns=['msoffice'])
-new_data = pd.get_dummies(new_data, columns=['weight'])
+X_train = pd.get_dummies(X_train, columns=['Touchscreen'])
+X_train = pd.get_dummies(X_train, columns=['msoffice'])
+X_train = pd.get_dummies(X_train, columns=['weight'])
 # new_data = pd.get_dummies(new_data, columns=['rating'])
 
-new_data['Touchscreen_No'] = new_data['Touchscreen_No'].map({True: 1, False: 0})
-new_data['Touchscreen_Yes'] = new_data['Touchscreen_Yes'].map({True: 1, False: 0})
+X_train['Touchscreen_No'] = X_train['Touchscreen_No'].map({True: 1, False: 0})
+X_train['Touchscreen_Yes'] = X_train['Touchscreen_Yes'].map({True: 1, False: 0})
 
-new_data['msoffice_No'] = new_data['msoffice_No'].map({True: 1, False: 0})
-new_data['msoffice_Yes'] = new_data['msoffice_Yes'].map({True: 1, False: 0})
+X_train['msoffice_No'] = X_train['msoffice_No'].map({True: 1, False: 0})
+X_train['msoffice_Yes'] = X_train['msoffice_Yes'].map({True: 1, False: 0})
 
-new_data['weight_Casual'] = new_data['weight_Casual'].map({True: 1, False: 0})
-new_data['weight_Gaming'] = new_data['weight_Gaming'].map({True: 1, False: 0})
-new_data['weight_ThinNlight'] = new_data['weight_ThinNlight'].map({True: 1, False: 0})
+X_train['weight_Casual'] = X_train['weight_Casual'].map({True: 1, False: 0})
+X_train['weight_Gaming'] = X_train['weight_Gaming'].map({True: 1, False: 0})
+X_train['weight_ThinNlight'] = X_train['weight_ThinNlight'].map({True: 1, False: 0})
+
+# Validation
+X_validation['processor_gnrtn'] = X_validation['processor_gnrtn'].replace("Not Available", pd.NA)
+mode_value = X_validation['processor_gnrtn'].mode()[0]
+X_validation['processor_gnrtn'] = X_validation['processor_gnrtn'].fillna(mode_value)
+
+# ram-gb ssd hdd graphic-card warranty generation --> Ordinal Encoding
+
+X_validation['ram_gb'] = ordinal_encoder_ram.transform(X_validation[['ram_gb']])
+X_validation['ssd'] = ordinal_encoder_ssd.transform(X_validation[['ssd']])
+X_validation['hdd'] = ordinal_encoder_hdd.transform(X_validation[['hdd']])
+X_validation['graphic_card_gb'] = ordinal_encoder_graphic_card_gb.transform(X_validation[['graphic_card_gb']])
+X_validation['warranty'] = ordinal_encoder_warranty.transform(X_validation[['warranty']])
+X_validation['processor_gnrtn'] = ordinal_encoder_generation.transform(X_validation[['processor_gnrtn']])
+# new_data['rating'] = ordinal_encoder_rating.fit_transform(new_data[['rating']])
+
+# From float to int64
+X_validation['ram_gb'] = X_validation['ram_gb'].astype('int64')
+X_validation['ssd'] = X_validation['ssd'].astype('int64')
+X_validation['hdd'] = X_validation['hdd'].astype('int64')
+X_validation['graphic_card_gb'] = X_validation['graphic_card_gb'].astype('int64')
+X_validation['warranty'] = X_validation['warranty'].astype('int64')
+X_validation['processor_gnrtn'] = X_validation['processor_gnrtn'].astype('int64')
+# new_data['rating'] = new_data['rating'].astype('int64')
+
+# Touch msoffice weight --> One Hot Encoding
+X_validation = pd.get_dummies(X_validation, columns=['Touchscreen'])
+X_validation = pd.get_dummies(X_validation, columns=['msoffice'])
+X_validation = pd.get_dummies(X_validation, columns=['weight'])
+# new_data = pd.get_dummies(new_data, columns=['rating'])
+
+X_validation['Touchscreen_No'] = X_validation['Touchscreen_No'].map({True: 1, False: 0})
+X_validation['Touchscreen_Yes'] = X_validation['Touchscreen_Yes'].map({True: 1, False: 0})
+
+X_validation['msoffice_No'] = X_validation['msoffice_No'].map({True: 1, False: 0})
+X_validation['msoffice_Yes'] = X_validation['msoffice_Yes'].map({True: 1, False: 0})
+
+X_validation['weight_Casual'] = X_validation['weight_Casual'].map({True: 1, False: 0})
+X_validation['weight_Gaming'] = X_validation['weight_Gaming'].map({True: 1, False: 0})
+X_validation['weight_ThinNlight'] = X_validation['weight_ThinNlight'].map({True: 1, False: 0})
 
 # new_data['rating_Bad Rating'] = new_data['rating_Bad Rating'].map({True: 1, False: 0})
 # new_data['rating_Good Rating'] = new_data['rating_Good Rating'].map({True: 1, False: 0})
 # rating_Bad Rating  rating_Good Rating
-new_data.drop(columns=['msoffice_No'], inplace=True)
-new_data.drop(columns=['Touchscreen_No'], inplace=True)
+# new_data.drop(columns=['msoffice_No'], inplace=True)
+# new_data.drop(columns=['Touchscreen_No'], inplace=True)
 # new_data.drop(columns=['rating_Bad Rating'], inplace=True)
-
+# 0X_train.to_csv('New Encoding.csv', index=False)
 # Brand , Processor brand, processor name, ram type, os --> Label Encoding
-new_data['brand'] = label_encoder.fit_transform(new_data['brand'])
-new_data['processor_brand'] = label_encoder.fit_transform(new_data['processor_brand'])
-new_data['processor_name'] = label_encoder.fit_transform(new_data['processor_name'])
-new_data['ram_type'] = label_encoder.fit_transform(new_data['ram_type'])
-new_data['os'] = label_encoder.fit_transform(new_data['os'])
-new_data['rating'] = label_encoder.fit_transform(new_data['rating'])
+# X_train['brand'] = label_encoder.fit_transform(X_train['brand'])
+# X_train['processor_brand'] = label_encoder.fit_transform(X_train['processor_brand'])
+# X_train['processor_name'] = label_encoder.fit_transform(X_train['processor_name'])
+# X_train['ram_type'] = label_encoder.fit_transform(X_train['ram_type'])
+# X_train['os'] = label_encoder.fit_transform(X_train['os'])
+# X_train['rating'] = label_encoder.fit_transform(X_train['rating'])
 # new_data['rating'] = new_data['rating'].astype(bool)
+for kvp in labelEncodersTrainDict.keys():
+    X_train[kvp] = labelEncodersTrainDict[kvp].fit_transform(X_train[kvp])
+    X_validation[kvp] = labelEncodersTrainDict[kvp].transform(X_validation[kvp])
+
+y_train = label_encoder_rating.fit_transform(y_train)
+y_validation = label_encoder_rating.transform(y_validation)
+
+# Validation
+# X_train.to_csv('New Encoding.csv', index=False)
 
 # Scaling
-x_before_scaling = new_data.drop(columns=['rating'])
+# x_before_scaling = new_data.drop(columns=['rating'])
 
-scaled_data = scaler.fit_transform(x_before_scaling)
-scaled_df = pd.DataFrame(scaled_data, columns=x_before_scaling.columns)
+X_scaled_train = scaler.fit_transform(X_train)
+X_scaled_validation = scaler.transform(X_validation)
 
-y = new_data['rating']
-x_scaled = scaled_df
+X_scaled_train_df = pd.DataFrame(X_scaled_train, columns=X_train.columns)
+X_scaled_validation_df = pd.DataFrame(X_scaled_validation, columns=X_validation.columns)
+# X_scaled_train_df = pd.DataFrame(X_scaled_train)
+# X_scaled_validation_df = pd.DataFrame(X_scaled_validation)
+
+X_scaled_train_df.to_csv('Scaled Train.csv', index=False)
+X_scaled_validation_df.to_csv('Scaled Validation.csv', index=False)
+# y = new_data['rating']
+# x_scaled = scaled_df
 
 # categorical_data_df = pd.concat([categorical_data_df, new_data['rating']], axis=1)
 # categorical_data_df.to_csv('categorical.csv', index=False)
 
-# Train Test Split --> Numerical
-X_train, X_test, y_train, y_test = train_test_split(x_scaled, y, test_size=0.20,
-                                                    shuffle=True,
-                                                    random_state=10)
 
 # Train Test Split --> Categorical X_train_categorical, X_test_categorical, y_train_categorical, y_test_categorical =
 # train_test_split(categorical_data_df, y, test_size=0.20, shuffle=True, random_state=10)
 
 # Train Numerical
 selected_numerical_columns = ['Price', 'Number of Ratings', 'Number of Reviews']
-numerical_data_df_train = X_train[selected_numerical_columns].copy()
+
+numerical_train_df = X_scaled_train_df[selected_numerical_columns].copy()
 
 # Test Numerical
-numerical_data_df_test = X_test[selected_numerical_columns].copy()
+numerical_validation_df = X_scaled_validation_df[selected_numerical_columns].copy()
 
 # numerical_data_df = pd.concat([numerical_data_df, new_data['rating']], axis=1)
 # numerical_data_df.to_csv('numerical.csv', index=False)
@@ -143,10 +224,10 @@ selected_categorical_columns = ['brand', 'processor_brand', 'processor_name', 'p
                                 'ssd', 'hdd', 'os', 'graphic_card_gb', 'warranty', 'Touchscreen_Yes',
                                 'msoffice_Yes', 'weight_Casual', 'weight_Gaming', 'weight_ThinNlight']
 # Train Categorical
-categorical_data_df_train = X_train[selected_categorical_columns].copy()
+categorical_train_df = X_scaled_train_df[selected_categorical_columns].copy()
 
 # Test Categorical
-categorical_data_df_test = X_test[selected_categorical_columns].copy()
+categorical_validation_df = X_scaled_validation_df[selected_categorical_columns].copy()
 
 # Categorical vs Categorical --> Use Chi-Squared or Mutual Info
 np.random.seed(41)
@@ -154,11 +235,11 @@ np.random.seed(41)
 # Train
 k = 5
 selector = SelectKBest(mutual_info_classif, k=k)
-X_selected_train = selector.fit_transform(categorical_data_df_train, y_train)
+X_selected_train = selector.fit_transform(categorical_train_df, y_train)
 
 # Get the indices of the selected features
 selected_feature_indices = selector.get_support(indices=True)
-selected_features = categorical_data_df_train.columns[selected_feature_indices]  # Assuming X_train is a DataFrame
+selected_features = categorical_train_df.columns[selected_feature_indices]  # Assuming X_train is a DataFrame
 
 # Print selected features
 print("Selected Features Train:")
@@ -167,11 +248,11 @@ print(selected_features)
 # Test
 k = 5
 selector_test = SelectKBest(mutual_info_classif, k=k)
-X_selected_test = selector_test.fit_transform(categorical_data_df_test, y_test)
+X_selected_test = selector_test.fit_transform(categorical_validation_df, y_validation)
 
 # Get the indices of the selected features
 selected_feature_indices_test = selector.get_support(indices=True)
-selected_features_test = categorical_data_df_test.columns[selected_feature_indices_test]  # Assuming X_train is a
+selected_features_test = categorical_validation_df.columns[selected_feature_indices_test]  # Assuming X_train is a
 # DataFrame
 
 # Print selected features
@@ -197,28 +278,28 @@ print(selected_features_test)
 # ANOVA
 # Train
 # X_train_numerical, X_test_numerical, y_train_numerical, y_test_numerical
-f_values = f_classif(numerical_data_df_train, y_train)[0]
+f_values = f_classif(numerical_train_df, y_train)[0]
 
 k = 2
 selector = SelectKBest(f_classif, k=k)
-X_selected_Anova_train = selector.fit_transform(numerical_data_df_train, y_train)
+X_selected_Anova_train = selector.fit_transform(numerical_train_df, y_train)
 
 selected_feature_indices_anova_train = selector.get_support(indices=True)
-selected_features_anova = numerical_data_df_train.columns[selected_feature_indices_anova_train]
+selected_features_anova = numerical_train_df.columns[selected_feature_indices_anova_train]
 
 print("Selected Features ANOVA Train:")
 print(selected_features_anova)
 
 # Test
 
-f_values = f_classif(numerical_data_df_test, y_test)[0]
+f_values = f_classif(numerical_validation_df, y_validation)[0]
 
 k = 2
 selector = SelectKBest(f_classif, k=k)
-X_selected_Anova_test = selector.fit_transform(numerical_data_df_test, y_test)
+X_selected_Anova_test = selector.fit_transform(numerical_validation_df, y_validation)
 
 selected_feature_indices_anova_test = selector.get_support(indices=True)
-selected_features_anova_test = numerical_data_df_test.columns[selected_feature_indices_anova_test]
+selected_features_anova_test = numerical_validation_df.columns[selected_feature_indices_anova_test]
 
 print("Selected Features ANOVA Test:")
 print(selected_features_anova_test)
@@ -250,7 +331,7 @@ y_predict_forward_test = logistic_model.predict(all_selectedFeatures_df_test)
 print('Logistic Regression Accuracy Train',
       metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted))
 print('Logistic Regression Accuracy Test',
-      metrics.accuracy_score(np.asarray(y_test), y_predict_forward_test))
+      metrics.accuracy_score(np.asarray(y_validation), y_predict_forward_test))
 
 classifier = SVC()
 
@@ -263,10 +344,11 @@ y_predict_test = classifier.predict(all_selectedFeatures_df_test)
 # y_predict_backward_test = logistic_model_backward.predict(x_after_feature_selection_backward_test)
 
 print('SVC Accuracy Train', metrics.accuracy_score(np.asarray(y_train), y_train_predicted))
-print('SVC Accuracy Test', metrics.accuracy_score(np.asarray(y_test), y_predict_test))
+print('SVC Accuracy Test', metrics.accuracy_score(np.asarray(y_validation), y_predict_test))
 
 # Decision Tree
-dt = DecisionTreeClassifier(max_depth=10)
+max_depth = 10
+dt = DecisionTreeClassifier(max_depth=max_depth)
 
 dt.fit(all_selectedFeatures_df_train, y_train)
 
@@ -274,7 +356,7 @@ y_train_predict_dt = dt.predict(all_selectedFeatures_df_train)
 y_test_predict_dt = dt.predict(all_selectedFeatures_df_test)
 
 train_accuracy_dt = accuracy_score(y_train, y_train_predict_dt)
-test_accuracy_dt = accuracy_score(y_test, y_test_predict_dt)
+test_accuracy_dt = accuracy_score(y_validation, y_test_predict_dt)
 
 print("Train Accuracy DT:", train_accuracy_dt)
 print("Test Accuracy DT:", test_accuracy_dt)
@@ -288,13 +370,13 @@ y_train_predict_rf = rf.predict(all_selectedFeatures_df_train)
 y_test_predict_rf = rf.predict(all_selectedFeatures_df_test)
 
 train_accuracy_rf = accuracy_score(y_train, y_train_predict_rf)
-test_accuracy_rf = accuracy_score(y_test, y_test_predict_rf)
+test_accuracy_rf = accuracy_score(y_validation, y_test_predict_rf)
 
 print("Train Accuracy Random Forest:", train_accuracy_rf)
 print("Test Accuracy Random Forest:", test_accuracy_rf)
 
 # KNN
-knn = KNeighborsClassifier(n_neighbors=5)
+knn = KNeighborsClassifier(n_neighbors=7)
 
 knn.fit(all_selectedFeatures_df_train, y_train)
 
@@ -302,7 +384,7 @@ y_train_predict_knn = knn.predict(all_selectedFeatures_df_train)
 y_test_predict_knn = knn.predict(all_selectedFeatures_df_test)
 
 train_accuracy_knn = accuracy_score(y_train, y_train_predict_knn)
-test_accuracy_knn = accuracy_score(y_test, y_test_predict_knn)
+test_accuracy_knn = accuracy_score(y_validation, y_test_predict_knn)
 
 print("Train Accuracy KNN:", train_accuracy_knn)
 print("Test Accuracy KNN:", test_accuracy_knn)
@@ -316,14 +398,14 @@ y_train_predict_xgb = xgboost.predict(all_selectedFeatures_df_train)
 y_test_predict_xgb = xgboost.predict(all_selectedFeatures_df_test)
 
 train_accuracy_xgb = accuracy_score(y_train, y_train_predict_xgb)
-test_accuracy_xgb = accuracy_score(y_test, y_test_predict_xgb)
+test_accuracy_xgb = accuracy_score(y_validation, y_test_predict_xgb)
 
 print("Train Accuracy XGBOOST:", train_accuracy_xgb)
 print("Test Accuracy XGBOOST:", test_accuracy_xgb)
 
 # AdaBoost
-
-ada = AdaBoostClassifier(n_estimators=250, random_state=42)
+n_estimators_ada = 250
+ada = AdaBoostClassifier(n_estimators=n_estimators_ada, random_state=42)
 
 ada.fit(all_selectedFeatures_df_train, y_train)
 
@@ -331,12 +413,13 @@ y_train_predict_ada = ada.predict(all_selectedFeatures_df_train)
 y_test_predict_ada = ada.predict(all_selectedFeatures_df_test)
 
 train_accuracy_ada = accuracy_score(y_train, y_train_predict_ada)
-test_accuracy_ada = accuracy_score(y_test, y_test_predict_ada)
+test_accuracy_ada = accuracy_score(y_validation, y_test_predict_ada)
 
-print("Train Accuracy AdaBoost:", train_accuracy_ada)
-print("Test Accuracy AdaBoost:", test_accuracy_ada)
+print(f"Train Accuracy AdaBoost with n_estimators_ada = {n_estimators_ada}:", train_accuracy_ada)
+print(f"Train Accuracy AdaBoost with n_estimators_ada = {n_estimators_ada}:", test_accuracy_ada)
 
 # Voting
+
 # Adaboost + XGBoost --> Done , AdaBoost + Decision Tree --> Done, XGBOOST + Decision Tree ,
 # Decision Tree + SVC --> Done, Decision Tree + Logistic Regression --> Done , Decision Tree + KNN
 # base_learners_voting = [
@@ -351,8 +434,11 @@ print("Test Accuracy AdaBoost:", test_accuracy_ada)
 
 base_learners_voting = [
     ('ada', AdaBoostClassifier(n_estimators=50, random_state=42)),
-    ('xgb', xgb.XGBClassifier()),
-    ('dt', DecisionTreeClassifier())
+    #  ('xgb', xgb.XGBClassifier()),
+    ('dt', DecisionTreeClassifier()),
+    # ('LR', LogisticRegression())
+    # ('knn', KNeighborsClassifier())
+    #  ('svc', SVC())
 ]
 
 votingModel = VotingClassifier(estimators=base_learners_voting, voting='hard')
@@ -363,7 +449,7 @@ y_train_predict_voting = votingModel.predict(all_selectedFeatures_df_train)
 y_test_predict_voting = votingModel.predict(all_selectedFeatures_df_test)
 
 train_accuracy_voting = accuracy_score(y_train, y_train_predict_voting)
-test_accuracy_voting = accuracy_score(y_test, y_test_predict_voting)
+test_accuracy_voting = accuracy_score(y_validation, y_test_predict_voting)
 
 print(f"Train Accuracy Voting with :", train_accuracy_voting)
 print(f"Test Accuracy Voting :", test_accuracy_voting)
@@ -378,7 +464,8 @@ base_learners_stacking = [
 ]
 
 meta_learner = AdaBoostClassifier(n_estimators=50, random_state=42)
-
+# meta_learner = DecisionTreeClassifier()
+# meta_learner = xgb.XGBClassifier()
 stackingModel = StackingClassifier(estimators=base_learners_stacking, final_estimator=meta_learner)
 
 stackingModel.fit(all_selectedFeatures_df_train, y_train)
@@ -387,7 +474,7 @@ y_train_predict_stacking = stackingModel.predict(all_selectedFeatures_df_train)
 y_test_predict_stacking = stackingModel.predict(all_selectedFeatures_df_test)
 
 train_accuracy_stacking = accuracy_score(y_train, y_train_predict_stacking)
-test_accuracy_stacking = accuracy_score(y_test, y_test_predict_stacking)
+test_accuracy_stacking = accuracy_score(y_validation, y_test_predict_stacking)
 
 print("Train Accuracy Stacking:", train_accuracy_stacking)
 print("Test Accuracy Stacking:", test_accuracy_stacking)
