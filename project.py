@@ -16,6 +16,7 @@ import seaborn as sns
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVR
 from sklearn.metrics import mean_squared_error
+from sklearn.metrics import r2_score
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 

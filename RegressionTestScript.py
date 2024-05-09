@@ -2,6 +2,7 @@ import pickle
 import pandas as pd
 from sklearn import metrics
 import numpy as np
+from sklearn.metrics import r2_score
 
 # mean and mode for every column to handle nulls 
 # Encoding (ordinal , label , one hot)
@@ -215,10 +216,15 @@ y_predict_backward_test = linear_model_backward.predict(X_Backward_features)
 print("\nFirst Model - Linear Regression: Using Forward Selection for Feature Selection")
 print('Linear Regression Mean Square Error Forward Test', metrics.mean_squared_error(np.asarray(Y),
                                                                                      y_predict_forward_test))
+print('Linear Regression R2 Score Forward Test', metrics.r2_score(np.asarray(Y),
+                                                                                     y_predict_forward_test))
 
 print("\nSecond Model - Linear Regression: Using Backward Elimination for Feature Selection")
 print('Linear Regression Mean Square Error Backward Test', metrics.mean_squared_error(np.asarray(Y),
                                                                                       y_predict_backward_test))
+
+print('Linear Regression R2 Score Backward Test', metrics.r2_score(np.asarray(Y),
+                                                                                      y_predict_backward_test))                                                                                                                                                                    
 
 y_predict_test_forward = poly_model_forward.predict(poly_features_forward.transform(X_Forward_features))
 y_predict_test_backward = poly_model_backward.predict(poly_features_backward.transform(X_Backward_features))
@@ -226,27 +232,39 @@ y_predict_test_backward = poly_model_backward.predict(poly_features_backward.tra
 print("\nThird Model - Polynomial Regression: Using Forward Selection for Feature Selection")
 print('Polynomial Regression Mean Square Error Forward Test ', metrics.mean_squared_error(np.asarray(Y),
                                                                                           y_predict_test_forward))
+print('Polynomial Regression R2 Score Forward Test ', metrics.r2_score(np.asarray(Y),
+                                                                                          y_predict_test_forward))                                                                                          
 
 print("\nFourth Model - Polynomial Regression: Using Backward Elimination for Feature Selection")
 print('Polynomial Regression Mean Square Error Backward Test ', metrics.mean_squared_error(np.asarray(Y),
                                                                                            y_predict_test_backward))
+print('Polynomial Regression R2 score Backward Test ', metrics.r2_score(np.asarray(Y),
+                                                                                           y_predict_test_backward))                                                                                           
 
 y_test_predict_forward = svr_forward.predict(X_Forward_features)
 test_mse_forward = metrics.mean_squared_error(Y, y_test_predict_forward)
+test_r2_score = metrics.r2_score(Y, y_test_predict_forward)
 print("\nFifth Model - SVR: Using Forward Selection for Feature Selection")
 print("Test MSE Forward SVR:", test_mse_forward)
+print("Test R2 Score Forward SVR:", test_r2_score)
 
 y_test_predict_backward = svr_backward.predict(X_Backward_features)
 test_mse_backward = metrics.mean_squared_error(Y, y_test_predict_backward)
+test_r2_score = metrics.r2_score(Y, y_test_predict_backward)
 print("\nSixth Model - SVR: Using Backward Elimination for Feature Selection")
 print("Test MSE Backward SVR:", test_mse_backward)
+print("Test R2 Score Backward SVR:", test_r2_score)
 
 y_test_predict_forward_dt = dt_regressor_forward.predict(X_Forward_features)
 test_mse_forward_dt = metrics.mean_squared_error(Y, y_test_predict_forward_dt)
+test_r2_score = metrics.r2_score(Y, y_test_predict_forward_dt)
 print("\nSeventh Model - Decision Tree Regressor: Using Forward Selection for Feature Selection")
 print("Test MSE Forward DT:", test_mse_forward_dt)
+print("Test R2 Score Forward DT:", test_r2_score)
 
 y_test_predict_backward_dt = dt_regressor_backward.predict(X_Backward_features)
 test_mse_backward_dt = metrics.mean_squared_error(Y, y_test_predict_backward_dt)
+test_r2_score = metrics.r2_score(Y, y_test_predict_backward_dt)
 print("\nEighth Model - Decision Tree Regressor: Using Backward Elimination for Feature Selection")
 print("Test MSE Backward DT:", test_mse_backward_dt)
+print("Test R2 Score Backward DT:", test_r2_score)
