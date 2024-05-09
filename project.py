@@ -139,13 +139,16 @@ def Scaling(x, is_valid):
 
 Y = pd.DataFrame()
 X = pd.DataFrame()
-data = pd.read_csv("ElecDeviceRatingPrediction.csv")
+data = pd.read_csv("G:\\Pattern Recognition\\Pattern-Recognition-Project\\ElecDeviceRatingPrediction.csv")
 Y['rating'] = data['rating']
 X = data.drop(columns=['rating'], axis=1)
 
 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.20, shuffle=True, random_state=10)
 X_train, X_validate, y_train, y_validate = train_test_split(X_train, y_train, test_size=0.20, shuffle=True,
                                                             random_state=10)
+
+X_test['rating'] = y_test['rating']
+X_test.to_csv('testData.csv', index=False)
 
 # Price,  Number of Ratings , Number of Reviews ---> Numerical columns ----> mean
 Price_Mean = X_train['Price'].mean()

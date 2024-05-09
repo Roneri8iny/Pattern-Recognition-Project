@@ -1,3 +1,4 @@
+import pickle
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
@@ -26,7 +27,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.feature_selection import SelectKBest, mutual_info_classif, f_classif
 
 warnings.filterwarnings("ignore", category=FutureWarning)
-data = pd.read_csv("ElecDeviceRatingPrediction_Milestone2.csv")
+data = pd.read_csv("G:\\Pattern Recognition\\Pattern-Recognition-Project\Milestone 2\\ElecDeviceRatingPrediction_Milestone2.csv")
 new_data = data
 
 ram_categories = ['4 GB', '8 GB', '16 GB', '32 GB']
@@ -38,12 +39,31 @@ generation_categories = ['4th', '7th', '8th', '9th', '10th', '11th', '12th']
 # rating_categories = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars']
 
 label_encoder = LabelEncoder()  # --> validation
+
 label_encoder_brand = LabelEncoder()
+label_encoder_brand.handle_unknown = 'use_encoded_value'
+label_encoder_brand.unknown_value = -1
+
 label_encoder_processor_brand = LabelEncoder()
+label_encoder_processor_brand.handle_unknown = 'use_encoded_value'
+label_encoder_processor_brand.unknown_value = -1
+
 label_encoder_processor_name = LabelEncoder()
+label_encoder_processor_name.handle_unknown = 'use_encoded_value'
+label_encoder_processor_name.unknown_value = -1
+
 label_encoder_ram_type = LabelEncoder()
+label_encoder_ram_type.handle_unknown = 'use_encoded_value'
+label_encoder_ram_type.unknown_value = -1
+
 label_encoder_os = LabelEncoder()
+label_encoder_os.handle_unknown = 'use_encoded_value'
+label_encoder_os.unknown_value = -1
+
 label_encoder_rating = LabelEncoder()
+label_encoder_rating.handle_unknown = 'use_encoded_value'
+label_encoder_rating.unknown_value = -1
+
 # Column name --> label encoder
 # X_train['brand'] = label_encoder.fit_transform(X_train['brand'])
 # X_train['processor_brand'] = label_encoder.fit_transform(X_train['processor_brand'])
@@ -53,17 +73,25 @@ label_encoder_rating = LabelEncoder()
 labelEncodersTrainDict = {'brand': label_encoder_brand, 'processor_brand': label_encoder_processor_brand,
                           'processor_name': label_encoder_processor_name, 'ram_type': label_encoder_ram_type,
                           'os': label_encoder_os}
+
+
 scaler = StandardScaler()
 
-ordinal_encoder_ram = OrdinalEncoder(categories=[ram_categories])
-ordinal_encoder_ssd = OrdinalEncoder(categories=[ssd_categories])
-ordinal_encoder_hdd = OrdinalEncoder(categories=[hdd_categories])
-ordinal_encoder_graphic_card_gb = OrdinalEncoder(categories=[graphic_card_gb_categories])
-ordinal_encoder_warranty = OrdinalEncoder(categories=[warranty_categories])
-ordinal_encoder_generation = OrdinalEncoder(categories=[generation_categories])
 
+ordinal_encoder_ram = OrdinalEncoder(categories=[ram_categories], handle_unknown='use_encoded_value', unknown_value=-1)
+ordinal_encoder_ssd = OrdinalEncoder(categories=[ssd_categories], handle_unknown='use_encoded_value', unknown_value=-1)
+ordinal_encoder_hdd = OrdinalEncoder(categories=[hdd_categories], handle_unknown='use_encoded_value', unknown_value=-1)
+ordinal_encoder_graphic_card_gb = OrdinalEncoder(categories=[graphic_card_gb_categories],
+                                                 handle_unknown='use_encoded_value', unknown_value=-1)
+ordinal_encoder_warranty = OrdinalEncoder(categories=[warranty_categories], handle_unknown='use_encoded_value',
+                                          unknown_value=-1)
+ordinal_encoder_generation = OrdinalEncoder(categories=[generation_categories], handle_unknown='use_encoded_value',
+                                            unknown_value=-1)
+
+
+y = pd.DataFrame()
+y['rating'] = new_data['rating']
 X = new_data.drop(columns=['rating'])
-y = new_data['rating']
 # Train Test Split --> Numerical
 X_train_initial, X_test_forbidden, y_train_initial, y_test_forbidden = train_test_split(X, y, test_size=0.20,
                                                                                         shuffle=True,
@@ -72,6 +100,52 @@ X_train_initial, X_test_forbidden, y_train_initial, y_test_forbidden = train_tes
 X_train, X_validation, y_train, y_validation = train_test_split(X_train_initial, y_train_initial, test_size=0.20,
                                                                 shuffle=True,
                                                                 random_state=10)
+
+X_test_forbidden['rating'] = y_test_forbidden['rating']
+X_test_forbidden.to_csv('testData.csv', index=False)
+
+
+# Price,  Number of Ratings , Number of Reviews ---> Numerical columns ----> mean
+Price_Mean = X_train['Price'].mean()
+Number_of_Ratings_mean = X_train['Number of Ratings'].mean()
+Number_of_Reviews_mean = X_train['Number of Reviews'].mean()
+
+brand_mode = X_train['brand'].mode()
+processor_brand_mode = X_train['processor_brand'].mode()
+processor_name_mode = X_train['processor_name'].mode()
+processor_gnrtn_mode = X_train['processor_gnrtn'].mode()
+ram_gb_mode = X_train['ram_gb'].mode()
+ram_type_mode = X_train['ram_type'].mode()
+ssd_mode = X_train['ssd'].mode()
+hdd_mode = X_train['hdd'].mode()
+os_mode = X_train['os'].mode()
+graphic_card_gb_mode = X_train['graphic_card_gb'].mode()
+weight_mode = X_train['weight'].mode()
+warranty_mode = X_train['warranty'].mode()
+Touchscreen_mode = X_train['Touchscreen'].mode()
+msoffice_mode = X_train['msoffice'].mode()
+
+with open('CMean.pkl', 'wb') as f:
+    pickle.dump(Price_Mean, f)
+    pickle.dump(Number_of_Ratings_mean, f)
+    pickle.dump(Number_of_Reviews_mean, f)
+
+with open('CMode.pkl', 'wb') as f:
+    pickle.dump(brand_mode, f)
+    pickle.dump(processor_brand_mode, f)
+    pickle.dump(processor_name_mode, f)
+    pickle.dump(processor_gnrtn_mode, f)
+    pickle.dump(ram_gb_mode, f)
+    pickle.dump(ram_type_mode, f)
+    pickle.dump(ssd_mode, f)
+    pickle.dump(hdd_mode, f)
+    pickle.dump(os_mode, f)
+    pickle.dump(graphic_card_gb_mode, f)
+    pickle.dump(weight_mode, f)
+    pickle.dump(warranty_mode, f)
+    pickle.dump(Touchscreen_mode, f)
+    pickle.dump(msoffice_mode, f)
+
 
 # ordinal_encoder_rating = OrdinalEncoder(categories=[rating_categories])
 # for column in new_data.columns:
@@ -95,6 +169,16 @@ X_train['graphic_card_gb'] = ordinal_encoder_graphic_card_gb.fit_transform(X_tra
 X_train['warranty'] = ordinal_encoder_warranty.fit_transform(X_train[['warranty']])
 X_train['processor_gnrtn'] = ordinal_encoder_generation.fit_transform(X_train[['processor_gnrtn']])
 # new_data['rating'] = ordinal_encoder_rating.fit_transform(new_data[['rating']])
+
+
+with open('Cordinal_encoding.pkl', 'wb') as f:
+    pickle.dump(ordinal_encoder_ram, f)
+    pickle.dump(ordinal_encoder_ssd, f)
+    pickle.dump(ordinal_encoder_hdd, f)
+    pickle.dump(ordinal_encoder_graphic_card_gb, f)
+    pickle.dump(ordinal_encoder_warranty, f)
+    pickle.dump(ordinal_encoder_generation, f)
+
 
 # From float to int64
 X_train['ram_gb'] = X_train['ram_gb'].astype('int64')
@@ -135,6 +219,8 @@ X_validation['graphic_card_gb'] = ordinal_encoder_graphic_card_gb.transform(X_va
 X_validation['warranty'] = ordinal_encoder_warranty.transform(X_validation[['warranty']])
 X_validation['processor_gnrtn'] = ordinal_encoder_generation.transform(X_validation[['processor_gnrtn']])
 # new_data['rating'] = ordinal_encoder_rating.fit_transform(new_data[['rating']])
+
+
 
 # From float to int64
 X_validation['ram_gb'] = X_validation['ram_gb'].astype('int64')
@@ -183,6 +269,15 @@ for kvp in labelEncodersTrainDict.keys():
 y_train = label_encoder_rating.fit_transform(y_train)
 y_validation = label_encoder_rating.transform(y_validation)
 
+with open('CLabel_encoding.pkl', 'wb') as f:
+    pickle.dump(label_encoder_brand, f)
+    pickle.dump(label_encoder_processor_brand, f)
+    pickle.dump(label_encoder_processor_name, f)
+    pickle.dump(label_encoder_ram_type, f)
+    pickle.dump(label_encoder_os, f)
+    pickle.dump(label_encoder_rating, f)
+
+
 # Validation
 # X_train.to_csv('New Encoding.csv', index=False)
 
@@ -192,22 +287,20 @@ y_validation = label_encoder_rating.transform(y_validation)
 X_scaled_train = scaler.fit_transform(X_train)
 X_scaled_validation = scaler.transform(X_validation)
 
+with open('CScaling.pkl', 'wb') as f:
+    pickle.dump(scaler, f)
+
 X_scaled_train_df = pd.DataFrame(X_scaled_train, columns=X_train.columns)
 X_scaled_validation_df = pd.DataFrame(X_scaled_validation, columns=X_validation.columns)
 # X_scaled_train_df = pd.DataFrame(X_scaled_train)
 # X_scaled_validation_df = pd.DataFrame(X_scaled_validation)
 
-X_scaled_train_df.to_csv('Scaled Train.csv', index=False)
-X_scaled_validation_df.to_csv('Scaled Validation.csv', index=False)
 # y = new_data['rating']
 # x_scaled = scaled_df
 
 # categorical_data_df = pd.concat([categorical_data_df, new_data['rating']], axis=1)
 # categorical_data_df.to_csv('categorical.csv', index=False)
 
-
-# Train Test Split --> Categorical X_train_categorical, X_test_categorical, y_train_categorical, y_test_categorical =
-# train_test_split(categorical_data_df, y, test_size=0.20, shuffle=True, random_state=10)
 
 # Train Numerical
 selected_numerical_columns = ['Price', 'Number of Ratings', 'Number of Reviews']
@@ -245,40 +338,7 @@ selected_features = categorical_train_df.columns[selected_feature_indices]  # As
 print("Selected Features Train:")
 print(selected_features)
 
-# Test
-k = 5
-selector_test = SelectKBest(mutual_info_classif, k=k)
-X_selected_test = selector_test.fit_transform(categorical_validation_df, y_validation)
 
-# Get the indices of the selected features
-selected_feature_indices_test = selector.get_support(indices=True)
-selected_features_test = categorical_validation_df.columns[selected_feature_indices_test]  # Assuming X_train is a
-# DataFrame
-
-# Print selected features
-print("Selected Features Train:")
-print(selected_features_test)
-
-# logistic_model_forward = linear_model.LogisticRegression()
-# logistic_model_backward = linear_model.LogisticRegression()
-#
-# logistic_model_forward.fit(X_selected_train, y_train)
-# y_forward_train_predicted = logistic_model_forward.predict(X_selected_train)
-#
-# y_predict_forward_test = logistic_model_forward.predict(X_selected_test)
-#
-# # print("First Model - Logistic Regression: Using Information Gain for Feature Selection")
-#
-# print('Logistic Regression Accuracy Train',
-#       metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted))
-# print('Logistic Regression Accuracy Test',
-#       metrics.accuracy_score(np.asarray(y_test), y_predict_forward_test))
-
-# Numerical vs Categorical ---> Use ANOVA or KENDALL's
-# ANOVA
-# Train
-# X_train_numerical, X_test_numerical, y_train_numerical, y_test_numerical
-f_values = f_classif(numerical_train_df, y_train)[0]
 
 k = 2
 selector = SelectKBest(f_classif, k=k)
@@ -290,19 +350,7 @@ selected_features_anova = numerical_train_df.columns[selected_feature_indices_an
 print("Selected Features ANOVA Train:")
 print(selected_features_anova)
 
-# Test
 
-f_values = f_classif(numerical_validation_df, y_validation)[0]
-
-k = 2
-selector = SelectKBest(f_classif, k=k)
-X_selected_Anova_test = selector.fit_transform(numerical_validation_df, y_validation)
-
-selected_feature_indices_anova_test = selector.get_support(indices=True)
-selected_features_anova_test = numerical_validation_df.columns[selected_feature_indices_anova_test]
-
-print("Selected Features ANOVA Test:")
-print(selected_features_anova_test)
 
 X_selected_train_df = pd.DataFrame(X_selected_train)
 X_selected_train_df.columns = selected_features
@@ -310,14 +358,20 @@ X_selected_Anova_train_df = pd.DataFrame(X_selected_Anova_train)
 X_selected_Anova_train_df.columns = selected_features_anova
 all_selectedFeatures_df_train = pd.concat([X_selected_train_df, X_selected_Anova_train_df], axis=1)
 
-X_selected_test_df = pd.DataFrame(X_selected_test)
-X_selected_test_df.columns = selected_features_test
-X_selected_Anova_test_df = pd.DataFrame(X_selected_Anova_test)
-X_selected_Anova_test_df.columns = selected_features_anova_test
+#validation IG
+X_selected_test_df = pd.DataFrame()
+for column in selected_features:
+    X_selected_test_df[column] = categorical_validation_df[column]
+
+#validation Anova
+X_selected_Anova_test_df = pd.DataFrame()
+for column in selected_features_anova:
+    X_selected_Anova_test_df[column] = numerical_validation_df[column]
+
 all_selectedFeatures_df_test = pd.concat([X_selected_test_df, X_selected_Anova_test_df], axis=1)
 
-all_selectedFeatures_df_train.to_csv('SelectedTrain.csv', index=False)
-all_selectedFeatures_df_test.to_csv('SelectedTest.csv', index=False)
+with open('Cfeatures.pkl', 'wb') as f:
+    pickle.dump(all_selectedFeatures_df_train.columns, f)
 
 logistic_model = linear_model.LogisticRegression(C=0.1)
 
@@ -325,8 +379,6 @@ logistic_model.fit(all_selectedFeatures_df_train, y_train)
 y_forward_train_predicted = logistic_model.predict(all_selectedFeatures_df_train)
 
 y_predict_forward_test = logistic_model.predict(all_selectedFeatures_df_test)
-
-# print("First Model - Logistic Regression: Using Information Gain for Feature Selection")
 
 print('Logistic Regression Accuracy Train',
       metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted))
@@ -478,3 +530,15 @@ test_accuracy_stacking = accuracy_score(y_validation, y_test_predict_stacking)
 
 print("Train Accuracy Stacking:", train_accuracy_stacking)
 print("Test Accuracy Stacking:", test_accuracy_stacking)
+
+
+with open('CMyTrainModel.pkl', 'wb') as f:
+    pickle.dump(logistic_model, f)
+    pickle.dump(classifier, f)
+    pickle.dump(dt, f)
+    pickle.dump(rf, f)
+    pickle.dump(knn, f)
+    pickle.dump(xgboost, f)
+    pickle.dump(ada, f)
+    pickle.dump(votingModel, f)
+    pickle.dump(stackingModel, f)

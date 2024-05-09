@@ -3,23 +3,15 @@ import pandas as pd
 from sklearn import metrics
 import numpy as np
 
-# mean and mode for every column to handle nulls 
-# Encoding (ordinal , label , one hot)
-# Drop No Columns in One Hot Encoding
-# Replacing Not Available in generation column
-# From float to int64
-# Save Scaling
-# Save Feature Selection 
-# Save Models
-
-Newdata = pd.read_csv("G:\\Pattern Recognition\\Pattern-Recognition-Project\\testData.csv")
+Newdata = pd.read_csv("G:\\Pattern Recognition\\Pattern-Recognition-Project\\Milestone 2\\testData.csv")
 test_data = Newdata
-with open('Mean.pkl', 'rb') as f:
+
+with open('CMean.pkl', 'rb') as f:
     Price_Mean = pickle.load(f)
     Number_of_Ratings_mean = pickle.load(f)
     Number_of_Reviews_mean = pickle.load(f)
 
-with open('Mode.pkl', 'rb') as f:
+with open('CMode.pkl', 'rb') as f:
     brand_mode = pickle.load(f)
     processor_brand_mode = pickle.load(f)
     processor_name_mode = pickle.load(f)
@@ -35,55 +27,39 @@ with open('Mode.pkl', 'rb') as f:
     Touchscreen_mode = pickle.load(f)
     msoffice_mode = pickle.load(f)
 
-with open('ordinal_encoding.pkl', 'rb') as f:
+with open('Cordinal_encoding.pkl', 'rb') as f:
     ordinal_encoder_ram = pickle.load(f)
     ordinal_encoder_ssd = pickle.load(f)
     ordinal_encoder_hdd = pickle.load(f)
     ordinal_encoder_graphic_card_gb = pickle.load(f)
     ordinal_encoder_warranty = pickle.load(f)
     ordinal_encoder_generation = pickle.load(f)
-    ordinal_encoder_rating = pickle.load(f)
 
-with open('Label_encoding.pkl', 'rb') as f:
+with open('CLabel_encoding.pkl', 'rb') as f:
     label_encoder_brand = pickle.load(f)
     label_encoder_processor_brand = pickle.load(f)
     label_encoder_processor_name = pickle.load(f)
     label_encoder_ram_type = pickle.load(f)
     label_encoder_os = pickle.load(f)
+    label_encoder_rating = pickle.load(f)
 
-with open('Scaling.pkl', 'rb') as f:
+with open('CScaling.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
+with open('Cfeatures.pkl', 'rb') as f:
+    all_selectedFeatures_df_columns = pickle.load(f)
 
-with open('FeatureSelectionForward.pkl', 'rb') as f:
-    selected_features_forward_train = pickle.load(f)
-
-
-with open('FeatureSelectionBackward.pkl', 'rb') as f:
-    selected_features_backward_train = pickle.load(f)
-
-
-with open('poly_features_forward.pkl', 'rb') as f:
-    poly_features_forward = pickle.load(f)
-
-
-with open('poly_features_backward.pkl', 'rb') as f:
-    poly_features_backward = pickle.load(f)
-
-
-with open('MyTrainModel.pkl', 'rb') as f:
-    linear_model_forward = pickle.load(f)
-    linear_model_backward = pickle.load(f)
-
-    poly_model_forward = pickle.load(f)
-    poly_model_backward = pickle.load(f)
-
-    svr_forward = pickle.load(f)
-    svr_backward = pickle.load(f)
-
-    dt_regressor_forward = pickle.load(f)
-    dt_regressor_backward = pickle.load(f)
-
+with open('CMyTrainModel.pkl', 'rb') as f:
+    logistic_model = pickle.load(f)
+    classifier = pickle.load(f)
+    dt = pickle.load(f)
+    rf = pickle.load(f)
+    knn = pickle.load(f)
+    xgboost = pickle.load(f)
+    ada = pickle.load(f)
+    votingModel = pickle.load(f)
+    stackingModel = pickle.load(f)
+   
 
 test_data['Price'] = test_data['Price'].apply(lambda x: x if x >= 0 else pd.NA)
 test_data['Number of Ratings'] = test_data['Number of Ratings'].apply(lambda x: x if x >= 0 else pd.NA)
@@ -156,7 +132,6 @@ test_data['hdd'] = ordinal_encoder_hdd.transform(test_data[['hdd']])
 test_data['graphic_card_gb'] = ordinal_encoder_graphic_card_gb.transform(test_data[['graphic_card_gb']])
 test_data['warranty'] = ordinal_encoder_warranty.transform(test_data[['warranty']])
 test_data['processor_gnrtn'] = ordinal_encoder_generation.transform(test_data[['processor_gnrtn']])
-test_data['rating'] = ordinal_encoder_rating.transform(test_data[['rating']])
 
 # From float to int64
 test_data['ram_gb'] = test_data['ram_gb'].astype('int64')
@@ -165,7 +140,6 @@ test_data['hdd'] = test_data['hdd'].astype('int64')
 test_data['graphic_card_gb'] = test_data['graphic_card_gb'].astype('int64')
 test_data['warranty'] = test_data['warranty'].astype('int64')
 test_data['processor_gnrtn'] = test_data['processor_gnrtn'].astype('int64')
-test_data['rating'] = test_data['rating'].astype('int64')
 
 
 # Touch msoffice weight --> One Hot Encoding
@@ -189,64 +163,63 @@ test_data['processor_brand'] = label_encoder_processor_brand.transform(test_data
 test_data['processor_name'] = label_encoder_processor_name.transform(test_data['processor_name'])
 test_data['ram_type'] = label_encoder_ram_type.transform(test_data['ram_type'])
 test_data['os'] = label_encoder_os.transform(test_data['os'])
+test_data['rating'] = label_encoder_rating.transform(test_data['rating'])
+
 
 Y = test_data['rating']
 X = test_data.drop('rating', axis=1)
 scaled_data = scaler.transform(X)
 scaled_df = pd.DataFrame(scaled_data, columns=X.columns)
 
-X_Forward_features = pd.DataFrame()
-X_Backward_features = pd.DataFrame()
 
-# Forward
-for column in selected_features_forward_train:
-    column_name = X.columns[column]
-    column_values_test = X.iloc[:, column]
-    X_Forward_features[column_name] = column_values_test
-# Backward
-for column in selected_features_backward_train:
-    column_name = X.columns[column]
-    column_values_test = X.iloc[:, column]
-    X_Backward_features[column_name] = column_values_test
+all_selectedFeatures_df_test = pd.DataFrame()
 
-y_predict_forward_test = linear_model_forward.predict(X_Forward_features)
-y_predict_backward_test = linear_model_backward.predict(X_Backward_features)
+for column in all_selectedFeatures_df_columns:
+    all_selectedFeatures_df_test[column] = X[column]
 
-print("\nFirst Model - Linear Regression: Using Forward Selection for Feature Selection")
-print('Linear Regression Mean Square Error Forward Test', metrics.mean_squared_error(np.asarray(Y),
-                                                                                     y_predict_forward_test))
 
-print("\nSecond Model - Linear Regression: Using Backward Elimination for Feature Selection")
-print('Linear Regression Mean Square Error Backward Test', metrics.mean_squared_error(np.asarray(Y),
-                                                                                      y_predict_backward_test))
 
-y_predict_test_forward = poly_model_forward.predict(poly_features_forward.transform(X_Forward_features))
-y_predict_test_backward = poly_model_backward.predict(poly_features_backward.transform(X_Backward_features))
+#logistic
+y_predict_test = logistic_model.predict(all_selectedFeatures_df_test)
+print('Logistic Regression Accuracy Test = ',
+      metrics.accuracy_score(np.asarray(Y), y_predict_test))
 
-print("\nThird Model - Polynomial Regression: Using Forward Selection for Feature Selection")
-print('Polynomial Regression Mean Square Error Forward Test ', metrics.mean_squared_error(np.asarray(Y),
-                                                                                          y_predict_test_forward))
+#SVC
+y_predict_test = classifier.predict(all_selectedFeatures_df_test)
+print('SVC Accuracy Test = ', metrics.accuracy_score(np.asarray(Y), y_predict_test))
 
-print("\nFourth Model - Polynomial Regression: Using Backward Elimination for Feature Selection")
-print('Polynomial Regression Mean Square Error Backward Test ', metrics.mean_squared_error(np.asarray(Y),
-                                                                                           y_predict_test_backward))
+#DT
+y_predict_test = dt.predict(all_selectedFeatures_df_test)
+test_accuracy_dt = metrics.accuracy_score(Y, y_predict_test)
+print("DT Accuracy Test = ", test_accuracy_dt)
 
-y_test_predict_forward = svr_forward.predict(X_Forward_features)
-test_mse_forward = metrics.mean_squared_error(Y, y_test_predict_forward)
-print("\nFifth Model - SVR: Using Forward Selection for Feature Selection")
-print("Test MSE Forward SVR:", test_mse_forward)
+#RF
+y_predict_test = logistic_model.predict(all_selectedFeatures_df_test)
+test_accuracy_rf = metrics.accuracy_score(Y, y_predict_test)
+print("DT Accuracy Test = ", test_accuracy_rf)
 
-y_test_predict_backward = svr_backward.predict(X_Backward_features)
-test_mse_backward = metrics.mean_squared_error(Y, y_test_predict_backward)
-print("\nSixth Model - SVR: Using Backward Elimination for Feature Selection")
-print("Test MSE Backward SVR:", test_mse_backward)
+#KNN
+y_predict_test = knn.predict(all_selectedFeatures_df_test)
+test_accuracy_knn = metrics.accuracy_score(Y, y_predict_test)
+print("KNN Accuracy Test = ", test_accuracy_knn)
 
-y_test_predict_forward_dt = dt_regressor_forward.predict(X_Forward_features)
-test_mse_forward_dt = metrics.mean_squared_error(Y, y_test_predict_forward_dt)
-print("\nSeventh Model - Decision Tree Regressor: Using Forward Selection for Feature Selection")
-print("Test MSE Forward DT:", test_mse_forward_dt)
+#xgboost
+y_predict_test = xgboost.predict(all_selectedFeatures_df_test)
+test_accuracy_xgb = metrics.accuracy_score(Y, y_predict_test)
+print("XGBOOST Accuracy Test = ", test_accuracy_xgb)
 
-y_test_predict_backward_dt = dt_regressor_backward.predict(X_Backward_features)
-test_mse_backward_dt = metrics.mean_squared_error(Y, y_test_predict_backward_dt)
-print("\nEighth Model - Decision Tree Regressor: Using Backward Elimination for Feature Selection")
-print("Test MSE Backward DT:", test_mse_backward_dt)
+#adaboost
+y_predict_test = ada.predict(all_selectedFeatures_df_test)
+test_accuracy_ada = metrics.accuracy_score(Y, y_predict_test)
+print("AdaBoost Accuracy Test = ", test_accuracy_ada)
+
+#voting
+y_predict_test = votingModel.predict(all_selectedFeatures_df_test)
+test_accuracy_voting = metrics.accuracy_score(Y, y_predict_test)
+print("Voting Accuracy Test = ", test_accuracy_voting)
+
+
+#stacking
+y_predict_test = stackingModel.predict(all_selectedFeatures_df_test)
+test_accuracy_stacking = metrics.accuracy_score(Y, y_predict_test)
+print("Stacking Accuracy Test = ", test_accuracy_stacking)
