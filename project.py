@@ -13,6 +13,7 @@ from sklearn.preprocessing import PolynomialFeatures
 import matplotlib.pyplot as plt
 from sklearn import metrics
 import seaborn as sns
+from sklearn.feature_selection import SelectKBest,  f_classif
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVR
 from sklearn.metrics import mean_squared_error
@@ -140,7 +141,7 @@ def Scaling(x, is_valid):
 
 Y = pd.DataFrame()
 X = pd.DataFrame()
-data = pd.read_csv("G:\\Pattern Recognition\\Pattern-Recognition-Project\\ElecDeviceRatingPrediction.csv")
+data = pd.read_csv("ElecDeviceRatingPrediction.csv")
 Y['rating'] = data['rating']
 X = data.drop(columns=['rating'], axis=1)
 
@@ -275,8 +276,55 @@ with open('Scaling.pkl', 'wb') as f:
 #
 #         plt.show()
 
-# Feature Selection
+# Feature Selection using anova on categorical_columns and correlation on numerical data
 
+selected_numerical_columns = ['Price', 'Number of Ratings', 'Number of Reviews']
+selected_categorical_columns = ['brand', 'processor_brand', 'processor_name', 'processor_gnrtn', 'ram_gb', 'ram_type',
+                                'ssd', 'hdd', 'os', 'graphic_card_gb', 'warranty', 'Touchscreen_Yes',
+                                'msoffice_Yes', 'weight_Casual', 'weight_Gaming', 'weight_ThinNlight']
+
+numerical_train_df = X_train[selected_numerical_columns].copy()
+numerical_train_df['rating'] = y_train['rating']
+categorical_train_df = X_train[selected_categorical_columns].copy()
+
+numerical_validation_df = X_validate[selected_numerical_columns].copy()
+categorical_validation_df = X_validate[selected_categorical_columns].copy()
+
+k = 7     # or 5
+selector = SelectKBest(f_classif, k=k)
+X_selected_Anova_train = selector.fit_transform(categorical_train_df, y_train)
+selected_feature_indices_anova_train = selector.get_support(indices=True)
+selected_features_anova = categorical_train_df.columns[selected_feature_indices_anova_train]
+X_selected_Anova_train_df = pd.DataFrame(X_selected_Anova_train)
+X_selected_Anova_train_df.columns = selected_features_anova
+
+
+corr = numerical_train_df.corr()
+# Top 50% Correlation training features with the Value
+top_feature = corr.index[abs(corr['rating']) > 0.1]
+# Correlation plot
+plt.subplots(figsize=(12, 8))
+top_corr = numerical_train_df[top_feature].corr()
+sns.heatmap(top_corr, annot=True)
+plt.show()
+top_feature = top_feature.delete(-1)
+X_corr_train = numerical_train_df[top_feature]
+print(top_feature)
+print(selected_features_anova)
+
+X_selected_Anova_Validation_df = pd.DataFrame()
+for column in selected_features_anova:
+    X_selected_Anova_Validation_df[column] = categorical_validation_df[column]
+
+X_selected_validation_corr_df = pd.DataFrame()
+for column in top_feature:
+    X_selected_validation_corr_df[column] = numerical_validation_df[column]
+
+all_selectedFeatures_df_train = pd.concat([X_corr_train, X_selected_Anova_train_df], axis=1)
+all_selectedFeatures_df_test = pd.concat([X_selected_validation_corr_df, X_selected_Anova_Validation_df], axis=1)
+
+
+# Feature Selection Using Forward and Backward Methods
 selector_forward_train = SequentialFeatureSelector(LinearRegression(), forward=True, k_features='best',
                                                    scoring='neg_mean_squared_error', cv=5)
 selector_forward_train.fit(X_train, y_train)
@@ -319,6 +367,7 @@ y_validate = y_validate.values.flatten()
 
 linear_model_forward = linear_model.LinearRegression()
 linear_model_backward = linear_model.LinearRegression()
+linear_model_anovaAndcorr = linear_model.LinearRegression()
 
 linear_model_forward.fit(x_after_feature_selection_forward_train, y_train)
 y_forward_train_predicted = linear_model_forward.predict(x_after_feature_selection_forward_train)
@@ -330,58 +379,100 @@ y_backward_train_predicted = linear_model_backward.predict(x_after_feature_selec
 
 y_predict_backward_test = linear_model_backward.predict(x_after_feature_selection_backward_validate)
 
-print("\nThird Model - Linear Regression: Using Forward Selection for Feature Selection")
+linear_model_anovaAndcorr.fit(all_selectedFeatures_df_train, y_train)
+y_anovaAndcorr_train_predicted = linear_model_anovaAndcorr.predict(all_selectedFeatures_df_train)
+
+y_predict_anovaAndcorr_test = linear_model_anovaAndcorr.predict(all_selectedFeatures_df_test)
+
+print("\nFirst Model - Linear Regression: Using Forward Selection for Feature Selection")
 
 print('Linear Regression Mean Square Error Forward Train',
       metrics.mean_squared_error(y_train, y_forward_train_predicted))
 print('Linear Regression Mean Square Error Forward Test',
       metrics.mean_squared_error(y_validate, y_predict_forward_test))
+print('Linear Regression R2-Score Forward Test',
+      metrics.r2_score(y_validate, y_predict_forward_test))
 
-print("\nFourth Model - Linear Regression: Using Backward Elimination for Feature Selection")
+print("\nSecond Model - Linear Regression: Using Backward Elimination for Feature Selection")
 
 print('Linear Regression Mean Square Error Backward Train',
       metrics.mean_squared_error(y_train, y_backward_train_predicted))
 print('Linear Regression Mean Square Error Backward Test',
       metrics.mean_squared_error(y_validate, y_predict_backward_test))
+print('Linear Regression R2-Score Backward Test',
+      metrics.r2_score(y_validate, y_predict_backward_test))
+
+print("\nThird Model - Linear Regression: Using Anova and Correlation for Feature Selection")
+
+print('Linear Regression Mean Square Error Anova and Correlation Train',
+      metrics.mean_squared_error(y_train, y_anovaAndcorr_train_predicted))
+print('Linear Regression Mean Square Error Anova and Correlation Test',
+      metrics.mean_squared_error(y_validate, y_predict_anovaAndcorr_test))
+print('Linear Regression R2-Score Anova and Correlation Test',
+      metrics.r2_score(y_validate, y_predict_anovaAndcorr_test))
 
 poly_features_forward = PolynomialFeatures(degree=2)
 poly_features_backward = PolynomialFeatures(degree=2)
+poly_feature_anovaAndcorr = PolynomialFeatures(degree=2)
 
 X_train_poly_forward = poly_features_forward.fit_transform(x_after_feature_selection_forward_train)
 X_train_poly_backward = poly_features_backward.fit_transform(x_after_feature_selection_backward_train)
+X_train_poly_anovaAndcorr = poly_feature_anovaAndcorr.fit_transform(all_selectedFeatures_df_train)
 
 poly_model_forward = linear_model.LinearRegression()
 poly_model_backward = linear_model.LinearRegression()
+poly_model_anovaAndcorr = linear_model.LinearRegression()
 
 poly_model_forward.fit(X_train_poly_forward, y_train)
 poly_model_backward.fit(X_train_poly_backward, y_train)
+poly_model_anovaAndcorr.fit(X_train_poly_anovaAndcorr, y_train)
 
 y_train_predicted_forward = poly_model_forward.predict(X_train_poly_forward)
 y_train_predicted_backward = poly_model_backward.predict(X_train_poly_backward)
+y_train_predicted_anovaAndcorr = poly_model_anovaAndcorr.predict(X_train_poly_anovaAndcorr)
 
 y_predict_test_forward = poly_model_forward.predict(
     poly_features_forward.transform(x_after_feature_selection_forward_validate))
+
 y_predict_test_backward = poly_model_backward.predict(
     poly_features_backward.transform(x_after_feature_selection_backward_validate))
 
-print("\n----- Best Model -----")
-print("Fifth Model - Polynomial Regression: Using Forward Selection for Feature Selection")
+
+y_predict_test_anovaAndcorr = poly_model_anovaAndcorr.predict(
+    poly_feature_anovaAndcorr.transform(all_selectedFeatures_df_test))
+
+print("Fourth Model - Polynomial Regression: Using Forward Selection for Feature Selection")
 
 print('Polynomial Regression Mean Square Error Forward Train ',
       metrics.mean_squared_error(y_train, y_train_predicted_forward))
 print('Polynomial Regression Mean Square Error Forward Test ',
       metrics.mean_squared_error(y_validate, y_predict_test_forward))
+print('Polynomial Regression R2-Score Forward Test ',
+      metrics.r2_score(y_validate, y_predict_test_forward))
 
-print("\nSixth Model - Polynomial Regression: Using Backward Elimination for Feature Selection")
+print("\nFifth Model - Polynomial Regression: Using Backward Elimination for Feature Selection")
 
 print('Polynomial Regression Mean Square Error Backward Train ',
       metrics.mean_squared_error(y_train, y_train_predicted_backward))
 print('Polynomial Regression Mean Square Error Backward Test ',
       metrics.mean_squared_error(y_validate, y_predict_test_backward))
+print('Polynomial Regression R2-Score Backward Test ',
+      metrics.r2_score(y_validate, y_predict_test_backward))
+
+print("\nSixth Model - Polynomial Regression: Using Anova and Correlation for Feature Selection")
+
+print('Polynomial Regression Mean Square Error Backward Train ',
+      metrics.mean_squared_error(y_train, y_train_predicted_anovaAndcorr))
+print('Polynomial Regression Mean Square Error Backward Test ',
+      metrics.mean_squared_error(y_validate, y_predict_test_anovaAndcorr))
+print('Polynomial Regression R2-Score Backward Test ',
+      metrics.r2_score(y_validate, y_predict_test_anovaAndcorr))
 
 # SVR
 svr_forward = SVR(kernel='rbf')
 svr_backward = SVR(kernel='rbf')
+svr_anovaAndcorr = SVR(kernel='rbf')
+
 # Forward
 svr_forward.fit(x_after_feature_selection_forward_train, y_train)
 y_train_predict_forward = svr_forward.predict(x_after_feature_selection_forward_train)
@@ -389,11 +480,13 @@ y_test_predict_forward = svr_forward.predict(x_after_feature_selection_forward_v
 
 train_mse_forward = mean_squared_error(y_train, y_train_predict_forward)
 test_mse_forward = mean_squared_error(y_validate, y_test_predict_forward)
+r2_score_forward = r2_score(y_validate, y_test_predict_forward)
 
 print("\nSeventh Model - SVR: Using Forward Selection for Feature Selection")
 
 print("Train MSE Forward SVR:", train_mse_forward)
 print("Test MSE Forward SVR:", test_mse_forward)
+print("Test R2-Score Forward SVR:", r2_score_forward)
 
 # Backward
 svr_backward.fit(x_after_feature_selection_backward_train, y_train)
@@ -402,15 +495,33 @@ y_test_predict_backward = svr_backward.predict(x_after_feature_selection_backwar
 
 train_mse_backward = mean_squared_error(y_train, y_train_predict_backward)
 test_mse_backward = mean_squared_error(y_validate, y_test_predict_backward)
+r2_score_backward = r2_score(y_validate, y_test_predict_backward)
 
 print("\nEighth Model - SVR: Using Backward Elimination for Feature Selection")
 
 print("Train MSE Backward SVR:", train_mse_backward)
 print("Test MSE Backward SVR:", test_mse_backward)
+print("Test R2-Score Backward SVR:", r2_score_backward)
+
+# Anova and correlation
+svr_anovaAndcorr.fit(all_selectedFeatures_df_train, y_train)
+y_train_predict_anovaAndcorr = svr_anovaAndcorr.predict(all_selectedFeatures_df_train)
+y_test_predict_anovaAndcorr = svr_anovaAndcorr.predict(all_selectedFeatures_df_test)
+
+train_mse_anovaAndcorr = mean_squared_error(y_train, y_train_predict_anovaAndcorr)
+test_mse_anovaAndcorr = mean_squared_error(y_validate, y_test_predict_anovaAndcorr)
+r2_score_anovaAndcorr = r2_score(y_validate, y_test_predict_anovaAndcorr)
+
+print("\nNinth Model - SVR: Using Anova and Correlation for Feature Selection")
+
+print("Train MSE Anova and Correlation SVR:", train_mse_anovaAndcorr)
+print("Test MSE Anova and Correlation SVR:", test_mse_anovaAndcorr)
+print("Test R2-Score Anova and Correlation SVR:", r2_score_anovaAndcorr)
 
 # Decision Tree Regression
 dt_regressor_forward = DecisionTreeRegressor()
 dt_regressor_backward = DecisionTreeRegressor()
+dt_regressor_anovaAndcorr = DecisionTreeRegressor()
 
 # Forward
 dt_regressor_forward.fit(x_after_feature_selection_forward_train, y_train)
@@ -419,11 +530,13 @@ y_test_predict_forward_dt = dt_regressor_forward.predict(x_after_feature_selecti
 
 train_mse_forward_dt = mean_squared_error(y_train, y_train_predict_forward_dt)
 test_mse_forward_dt = mean_squared_error(y_validate, y_test_predict_forward_dt)
+r2_score_forward_dt = r2_score(y_validate, y_test_predict_forward_dt)
 
-print("\nNinth Model - Decision Tree Regressor: Using Forward Selection for Feature Selection")
+print("\nTenth Model - Decision Tree Regressor: Using Forward Selection for Feature Selection")
 
 print("Train MSE Forward DT:", train_mse_forward_dt)
 print("Test MSE Forward DT:", test_mse_forward_dt)
+print("Test R2-Score Forward DT:", r2_score_forward_dt)
 
 # Backward
 dt_regressor_backward.fit(x_after_feature_selection_backward_train, y_train)
@@ -432,11 +545,26 @@ y_test_predict_backward_dt = dt_regressor_backward.predict(x_after_feature_selec
 
 train_mse_backward_dt = mean_squared_error(y_train, y_train_predict_backward_dt)
 test_mse_backward_dt = mean_squared_error(y_validate, y_test_predict_backward_dt)
-
-print("\nTenth Model - Decision Tree Regressor: Using Backward Elimination for Feature Selection")
+r2_score_backward_dt = r2_score(y_validate, y_test_predict_backward_dt)
+print("\nEleventh Model - Decision Tree Regressor: Using Backward Elimination for Feature Selection")
 
 print("Train MSE Backward DT:", train_mse_backward_dt)
 print("Test MSE Backward DT:", test_mse_backward_dt)
+print("Test R2-Score Backward DT:", r2_score_backward_dt)
+
+dt_regressor_anovaAndcorr.fit(all_selectedFeatures_df_train, y_train)
+y_train_predict_anovaAndcorr_dt = dt_regressor_anovaAndcorr.predict(all_selectedFeatures_df_train)
+y_test_predict_anovaAndcorr_dt = dt_regressor_anovaAndcorr.predict(all_selectedFeatures_df_test)
+
+train_mse_anovaAndcorr_dt = mean_squared_error(y_train, y_train_predict_anovaAndcorr_dt)
+test_mse_anovaAndcorr_dt = mean_squared_error(y_validate, y_test_predict_anovaAndcorr_dt)
+r2_score_anovaAndcorr_dt = r2_score(y_validate, y_test_predict_anovaAndcorr_dt)
+
+print("\nTwelfth Model - Decision Tree Regressor: Using Anova and Correlation for Feature Selection")
+
+print("Train MSE Anova and Correlation DT:", train_mse_anovaAndcorr_dt)
+print("Test MSE Anova and Correlation DT:", test_mse_anovaAndcorr_dt)
+print("Test R2-Score Anova and Correlation DT:", r2_score_anovaAndcorr_dt)
 
 with open('FeatureSelectionForward.pkl', 'wb') as f:
     pickle.dump(selected_features_forward_train, f)
@@ -450,7 +578,7 @@ with open('poly_features_forward.pkl', 'wb') as f:
 with open('poly_features_backward.pkl', 'wb') as f:
     pickle.dump(poly_features_backward, f)
 
-poly_features_forward
+
 with open('MyTrainModel.pkl', 'wb') as f:
     pickle.dump(linear_model_forward, f)
     pickle.dump(linear_model_backward, f)

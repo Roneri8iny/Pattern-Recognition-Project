@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn import metrics
 import numpy as np
 
-Newdata = pd.read_csv("G:\\Pattern Recognition\\Pattern-Recognition-Project\\Milestone 2\\testData.csv")
+Newdata = pd.read_csv("testData.csv")
 test_data = Newdata
 
 with open('CMean.pkl', 'rb') as f:

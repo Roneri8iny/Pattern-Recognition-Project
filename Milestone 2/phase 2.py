@@ -23,11 +23,10 @@ from sklearn import metrics
 import seaborn as sns
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVC
-from sklearn.metrics import mean_squared_error
 from sklearn.feature_selection import SelectKBest, mutual_info_classif, f_classif
 
 warnings.filterwarnings("ignore", category=FutureWarning)
-data = pd.read_csv("G:\\Pattern Recognition\\Pattern-Recognition-Project\Milestone 2\\ElecDeviceRatingPrediction_Milestone2.csv")
+data = pd.read_csv("ElecDeviceRatingPrediction_Milestone2.csv")
 new_data = data
 
 ram_categories = ['4 GB', '8 GB', '16 GB', '32 GB']
@@ -36,7 +35,6 @@ hdd_categories = ['0 GB', '512 GB', '1024 GB', '2048 GB']
 graphic_card_gb_categories = ['0 GB', '2 GB', '4 GB', '6 GB', '8 GB']
 warranty_categories = ['No warranty', '1 year', '3 years', '2 years']
 generation_categories = ['4th', '7th', '8th', '9th', '10th', '11th', '12th']
-# rating_categories = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars']
 
 label_encoder = LabelEncoder()  # --> validation
 
@@ -64,12 +62,6 @@ label_encoder_rating = LabelEncoder()
 label_encoder_rating.handle_unknown = 'use_encoded_value'
 label_encoder_rating.unknown_value = -1
 
-# Column name --> label encoder
-# X_train['brand'] = label_encoder.fit_transform(X_train['brand'])
-# X_train['processor_brand'] = label_encoder.fit_transform(X_train['processor_brand'])
-# X_train['processor_name'] = label_encoder.fit_transform(X_train['processor_name'])
-# X_train['ram_type'] = label_encoder.fit_transform(X_train['ram_type'])
-# X_train['os'] = label_encoder.fit_transform(X_train['os'])
 labelEncodersTrainDict = {'brand': label_encoder_brand, 'processor_brand': label_encoder_processor_brand,
                           'processor_name': label_encoder_processor_name, 'ram_type': label_encoder_ram_type,
                           'os': label_encoder_os}
@@ -187,13 +179,13 @@ X_train['hdd'] = X_train['hdd'].astype('int64')
 X_train['graphic_card_gb'] = X_train['graphic_card_gb'].astype('int64')
 X_train['warranty'] = X_train['warranty'].astype('int64')
 X_train['processor_gnrtn'] = X_train['processor_gnrtn'].astype('int64')
-# new_data['rating'] = new_data['rating'].astype('int64')
+
 
 # Touch msoffice weight --> One Hot Encoding
 X_train = pd.get_dummies(X_train, columns=['Touchscreen'])
 X_train = pd.get_dummies(X_train, columns=['msoffice'])
 X_train = pd.get_dummies(X_train, columns=['weight'])
-# new_data = pd.get_dummies(new_data, columns=['rating'])
+
 
 X_train['Touchscreen_No'] = X_train['Touchscreen_No'].map({True: 1, False: 0})
 X_train['Touchscreen_Yes'] = X_train['Touchscreen_Yes'].map({True: 1, False: 0})
@@ -229,13 +221,13 @@ X_validation['hdd'] = X_validation['hdd'].astype('int64')
 X_validation['graphic_card_gb'] = X_validation['graphic_card_gb'].astype('int64')
 X_validation['warranty'] = X_validation['warranty'].astype('int64')
 X_validation['processor_gnrtn'] = X_validation['processor_gnrtn'].astype('int64')
-# new_data['rating'] = new_data['rating'].astype('int64')
+
 
 # Touch msoffice weight --> One Hot Encoding
 X_validation = pd.get_dummies(X_validation, columns=['Touchscreen'])
 X_validation = pd.get_dummies(X_validation, columns=['msoffice'])
 X_validation = pd.get_dummies(X_validation, columns=['weight'])
-# new_data = pd.get_dummies(new_data, columns=['rating'])
+
 
 X_validation['Touchscreen_No'] = X_validation['Touchscreen_No'].map({True: 1, False: 0})
 X_validation['Touchscreen_Yes'] = X_validation['Touchscreen_Yes'].map({True: 1, False: 0})
@@ -247,21 +239,7 @@ X_validation['weight_Casual'] = X_validation['weight_Casual'].map({True: 1, Fals
 X_validation['weight_Gaming'] = X_validation['weight_Gaming'].map({True: 1, False: 0})
 X_validation['weight_ThinNlight'] = X_validation['weight_ThinNlight'].map({True: 1, False: 0})
 
-# new_data['rating_Bad Rating'] = new_data['rating_Bad Rating'].map({True: 1, False: 0})
-# new_data['rating_Good Rating'] = new_data['rating_Good Rating'].map({True: 1, False: 0})
-# rating_Bad Rating  rating_Good Rating
-# new_data.drop(columns=['msoffice_No'], inplace=True)
-# new_data.drop(columns=['Touchscreen_No'], inplace=True)
-# new_data.drop(columns=['rating_Bad Rating'], inplace=True)
-# 0X_train.to_csv('New Encoding.csv', index=False)
-# Brand , Processor brand, processor name, ram type, os --> Label Encoding
-# X_train['brand'] = label_encoder.fit_transform(X_train['brand'])
-# X_train['processor_brand'] = label_encoder.fit_transform(X_train['processor_brand'])
-# X_train['processor_name'] = label_encoder.fit_transform(X_train['processor_name'])
-# X_train['ram_type'] = label_encoder.fit_transform(X_train['ram_type'])
-# X_train['os'] = label_encoder.fit_transform(X_train['os'])
-# X_train['rating'] = label_encoder.fit_transform(X_train['rating'])
-# new_data['rating'] = new_data['rating'].astype(bool)
+
 for kvp in labelEncodersTrainDict.keys():
     X_train[kvp] = labelEncodersTrainDict[kvp].fit_transform(X_train[kvp])
     X_validation[kvp] = labelEncodersTrainDict[kvp].transform(X_validation[kvp])
@@ -277,13 +255,6 @@ with open('CLabel_encoding.pkl', 'wb') as f:
     pickle.dump(label_encoder_os, f)
     pickle.dump(label_encoder_rating, f)
 
-
-# Validation
-# X_train.to_csv('New Encoding.csv', index=False)
-
-# Scaling
-# x_before_scaling = new_data.drop(columns=['rating'])
-
 X_scaled_train = scaler.fit_transform(X_train)
 X_scaled_validation = scaler.transform(X_validation)
 
@@ -292,15 +263,6 @@ with open('CScaling.pkl', 'wb') as f:
 
 X_scaled_train_df = pd.DataFrame(X_scaled_train, columns=X_train.columns)
 X_scaled_validation_df = pd.DataFrame(X_scaled_validation, columns=X_validation.columns)
-# X_scaled_train_df = pd.DataFrame(X_scaled_train)
-# X_scaled_validation_df = pd.DataFrame(X_scaled_validation)
-
-# y = new_data['rating']
-# x_scaled = scaled_df
-
-# categorical_data_df = pd.concat([categorical_data_df, new_data['rating']], axis=1)
-# categorical_data_df.to_csv('categorical.csv', index=False)
-
 
 # Train Numerical
 selected_numerical_columns = ['Price', 'Number of Ratings', 'Number of Reviews']
@@ -310,8 +272,6 @@ numerical_train_df = X_scaled_train_df[selected_numerical_columns].copy()
 # Test Numerical
 numerical_validation_df = X_scaled_validation_df[selected_numerical_columns].copy()
 
-# numerical_data_df = pd.concat([numerical_data_df, new_data['rating']], axis=1)
-# numerical_data_df.to_csv('numerical.csv', index=False)
 
 selected_categorical_columns = ['brand', 'processor_brand', 'processor_name', 'processor_gnrtn', 'ram_gb', 'ram_type',
                                 'ssd', 'hdd', 'os', 'graphic_card_gb', 'warranty', 'Touchscreen_Yes',
@@ -334,12 +294,6 @@ X_selected_train = selector.fit_transform(categorical_train_df, y_train)
 selected_feature_indices = selector.get_support(indices=True)
 selected_features = categorical_train_df.columns[selected_feature_indices]  # Assuming X_train is a DataFrame
 
-# Print selected features
-print("Selected Features Train:")
-print(selected_features)
-
-
-
 k = 2
 selector = SelectKBest(f_classif, k=k)
 X_selected_Anova_train = selector.fit_transform(numerical_train_df, y_train)
@@ -347,23 +301,18 @@ X_selected_Anova_train = selector.fit_transform(numerical_train_df, y_train)
 selected_feature_indices_anova_train = selector.get_support(indices=True)
 selected_features_anova = numerical_train_df.columns[selected_feature_indices_anova_train]
 
-print("Selected Features ANOVA Train:")
-print(selected_features_anova)
-
-
-
 X_selected_train_df = pd.DataFrame(X_selected_train)
 X_selected_train_df.columns = selected_features
 X_selected_Anova_train_df = pd.DataFrame(X_selected_Anova_train)
 X_selected_Anova_train_df.columns = selected_features_anova
 all_selectedFeatures_df_train = pd.concat([X_selected_train_df, X_selected_Anova_train_df], axis=1)
 
-#validation IG
+# validation IG
 X_selected_test_df = pd.DataFrame()
 for column in selected_features:
     X_selected_test_df[column] = categorical_validation_df[column]
 
-#validation Anova
+# validation Anova
 X_selected_Anova_test_df = pd.DataFrame()
 for column in selected_features_anova:
     X_selected_Anova_test_df[column] = numerical_validation_df[column]
@@ -372,6 +321,10 @@ all_selectedFeatures_df_test = pd.concat([X_selected_test_df, X_selected_Anova_t
 
 with open('Cfeatures.pkl', 'wb') as f:
     pickle.dump(all_selectedFeatures_df_train.columns, f)
+
+
+y_train = y_train.values.flatten()
+y_validation = y_validation.values.flatten()
 
 logistic_model = linear_model.LogisticRegression(C=0.1)
 
@@ -390,10 +343,6 @@ classifier = SVC()
 classifier.fit(all_selectedFeatures_df_train, y_train)
 y_train_predicted = classifier.predict(all_selectedFeatures_df_train)
 y_predict_test = classifier.predict(all_selectedFeatures_df_test)
-# logistic_model_backward.fit(x_after_feature_selection_backward_train, y_train)
-# y_backward_train_predicted = logistic_model_backward.predict(x_after_feature_selection_backward_train)
-#
-# y_predict_backward_test = logistic_model_backward.predict(x_after_feature_selection_backward_test)
 
 print('SVC Accuracy Train', metrics.accuracy_score(np.asarray(y_train), y_train_predicted))
 print('SVC Accuracy Test', metrics.accuracy_score(np.asarray(y_validation), y_predict_test))

@@ -2,7 +2,6 @@ import pickle
 import pandas as pd
 from sklearn import metrics
 import numpy as np
-from sklearn.metrics import r2_score
 
 # mean and mode for every column to handle nulls 
 # Encoding (ordinal , label , one hot)
@@ -13,7 +12,7 @@ from sklearn.metrics import r2_score
 # Save Feature Selection 
 # Save Models
 
-Newdata = pd.read_csv("G:\\Pattern Recognition\\Pattern-Recognition-Project\\testData.csv")
+Newdata = pd.read_csv("testData.csv")
 test_data = Newdata
 with open('Mean.pkl', 'rb') as f:
     Price_Mean = pickle.load(f)
