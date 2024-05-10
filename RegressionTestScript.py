@@ -14,6 +14,15 @@ import numpy as np
 
 Newdata = pd.read_csv("testData.csv")
 test_data = Newdata
+with open('AnovaAndCorr','rb')as f:
+    all_selectedFeatures_df_train_columns = pickle.load(f)
+    linear_model_AnovaAndCorr = pickle.load(f)
+    poly_feature_anovaAndcorr = pickle.load(f)
+    poly_model_anovaAndcorr = pickle.load(f)
+    svr_anovaAndcorr = pickle.load(f)
+    dt_regressor_anovaAndcorr = pickle.load(f)
+
+
 with open('Mean.pkl', 'rb') as f:
     Price_Mean = pickle.load(f)
     Number_of_Ratings_mean = pickle.load(f)
@@ -197,73 +206,113 @@ scaled_df = pd.DataFrame(scaled_data, columns=X.columns)
 
 X_Forward_features = pd.DataFrame()
 X_Backward_features = pd.DataFrame()
+X_AnovaAndCorr_features = pd.DataFrame()
 
 # Forward
 for column in selected_features_forward_train:
-    column_name = X.columns[column]
-    column_values_test = X.iloc[:, column]
+    column_name = scaled_df.columns[column]
+    column_values_test = scaled_df.iloc[:, column]
     X_Forward_features[column_name] = column_values_test
 # Backward
 for column in selected_features_backward_train:
-    column_name = X.columns[column]
-    column_values_test = X.iloc[:, column]
+    column_name = scaled_df.columns[column]
+    column_values_test = scaled_df.iloc[:, column]
     X_Backward_features[column_name] = column_values_test
+
+print(all_selectedFeatures_df_train_columns)
+# Anova and Corr
+for column in all_selectedFeatures_df_train_columns:
+    X_AnovaAndCorr_features[column]=scaled_df[column]
+    
+   
 
 y_predict_forward_test = linear_model_forward.predict(X_Forward_features)
 y_predict_backward_test = linear_model_backward.predict(X_Backward_features)
-
+y_predict_AnovaAndCorr_test = linear_model_AnovaAndCorr.predict(X_AnovaAndCorr_features)
 print("\nFirst Model - Linear Regression: Using Forward Selection for Feature Selection")
 print('Linear Regression Mean Square Error Forward Test', metrics.mean_squared_error(np.asarray(Y),
                                                                                      y_predict_forward_test))
 print('Linear Regression R2 Score Forward Test', metrics.r2_score(np.asarray(Y),
                                                                                      y_predict_forward_test))
 
+
 print("\nSecond Model - Linear Regression: Using Backward Elimination for Feature Selection")
 print('Linear Regression Mean Square Error Backward Test', metrics.mean_squared_error(np.asarray(Y),
                                                                                       y_predict_backward_test))
 
 print('Linear Regression R2 Score Backward Test', metrics.r2_score(np.asarray(Y),
-                                                                                      y_predict_backward_test))                                                                                                                                                                    
+                                                                                      y_predict_backward_test))    
+
+
+print("\nThird Model - Linear Regression: Using Anova And Correlation for Feature Selection")
+print('Linear Regression Mean Square Error Anova And Correlation Test', metrics.mean_squared_error(np.asarray(Y),
+                                                                                      y_predict_AnovaAndCorr_test))
+
+print('Linear Regression R2 Score Anova And Correlation Test', metrics.r2_score(np.asarray(Y),
+                                                                                      y_predict_AnovaAndCorr_test))                                                                                                                                                                  
 
 y_predict_test_forward = poly_model_forward.predict(poly_features_forward.transform(X_Forward_features))
 y_predict_test_backward = poly_model_backward.predict(poly_features_backward.transform(X_Backward_features))
+y_predict_test_AnovaAndCorr = poly_model_anovaAndcorr.predict(poly_feature_anovaAndcorr.transform(X_AnovaAndCorr_features))
 
-print("\nThird Model - Polynomial Regression: Using Forward Selection for Feature Selection")
+print("\nFourth Model - Polynomial Regression: Using Forward Selection for Feature Selection")
 print('Polynomial Regression Mean Square Error Forward Test ', metrics.mean_squared_error(np.asarray(Y),
                                                                                           y_predict_test_forward))
 print('Polynomial Regression R2 Score Forward Test ', metrics.r2_score(np.asarray(Y),
                                                                                           y_predict_test_forward))                                                                                          
 
-print("\nFourth Model - Polynomial Regression: Using Backward Elimination for Feature Selection")
+print("\nFifth Model - Polynomial Regression: Using Backward Elimination for Feature Selection")
 print('Polynomial Regression Mean Square Error Backward Test ', metrics.mean_squared_error(np.asarray(Y),
                                                                                            y_predict_test_backward))
 print('Polynomial Regression R2 score Backward Test ', metrics.r2_score(np.asarray(Y),
                                                                                            y_predict_test_backward))                                                                                           
+print("\nSixth Model - Polynomial Regression: Using Backward Elimination for Feature Selection")
+print('Polynomial Regression Mean Square Error Backward Test ', metrics.mean_squared_error(np.asarray(Y),
+                                                                                           y_predict_test_AnovaAndCorr))
+print('Polynomial Regression R2 score Backward Test ', metrics.r2_score(np.asarray(Y),
+                                                                                           y_predict_test_AnovaAndCorr))                                                                                           
 
 y_test_predict_forward = svr_forward.predict(X_Forward_features)
 test_mse_forward = metrics.mean_squared_error(Y, y_test_predict_forward)
 test_r2_score = metrics.r2_score(Y, y_test_predict_forward)
-print("\nFifth Model - SVR: Using Forward Selection for Feature Selection")
+print("\nSeventh Model - SVR: Using Forward Selection for Feature Selection")
 print("Test MSE Forward SVR:", test_mse_forward)
 print("Test R2 Score Forward SVR:", test_r2_score)
 
 y_test_predict_backward = svr_backward.predict(X_Backward_features)
 test_mse_backward = metrics.mean_squared_error(Y, y_test_predict_backward)
 test_r2_score = metrics.r2_score(Y, y_test_predict_backward)
-print("\nSixth Model - SVR: Using Backward Elimination for Feature Selection")
+print("\nEighth Model - SVR: Using Backward Elimination for Feature Selection")
 print("Test MSE Backward SVR:", test_mse_backward)
 print("Test R2 Score Backward SVR:", test_r2_score)
+
+
+y_test_predict_AnovaAndCorr = svr_anovaAndcorr.predict(X_AnovaAndCorr_features)
+test_mse_AnovaAndCorr = metrics.mean_squared_error(Y, y_test_predict_AnovaAndCorr)
+test_r2_score = metrics.r2_score(Y, y_test_predict_AnovaAndCorr)
+print("\nninth Model - SVR: Using Anova And Correlation for Feature Selection")
+print("Test MSE  Anova And Correlation SVR:", test_mse_AnovaAndCorr)
+print("Test R2 Score  Anova And Correlation SVR:", test_r2_score)
+
 
 y_test_predict_forward_dt = dt_regressor_forward.predict(X_Forward_features)
 test_mse_forward_dt = metrics.mean_squared_error(Y, y_test_predict_forward_dt)
 test_r2_score = metrics.r2_score(Y, y_test_predict_forward_dt)
-print("\nSeventh Model - Decision Tree Regressor: Using Forward Selection for Feature Selection")
+print("\nTenth Model - Decision Tree Regressor: Using Forward Selection for Feature Selection")
 print("Test MSE Forward DT:", test_mse_forward_dt)
 print("Test R2 Score Forward DT:", test_r2_score)
 
 y_test_predict_backward_dt = dt_regressor_backward.predict(X_Backward_features)
 test_mse_backward_dt = metrics.mean_squared_error(Y, y_test_predict_backward_dt)
 test_r2_score = metrics.r2_score(Y, y_test_predict_backward_dt)
-print("\nEighth Model - Decision Tree Regressor: Using Backward Elimination for Feature Selection")
+print("\nEleventh Model - Decision Tree Regressor: Using Backward Elimination for Feature Selection")
 print("Test MSE Backward DT:", test_mse_backward_dt)
 print("Test R2 Score Backward DT:", test_r2_score)
+
+
+y_test_predict_AnovaAndCorr_dt = dt_regressor_anovaAndcorr.predict(X_AnovaAndCorr_features)
+test_mse_AnovaAndCorr_dt = metrics.mean_squared_error(Y, y_test_predict_AnovaAndCorr_dt)
+test_r2_score_AnovaAndCorr = metrics.r2_score(Y, y_test_predict_AnovaAndCorr_dt)
+print("\nTwelve Model - Decision Tree Regressor: Using Anova And Correlation for Feature Selection")
+print("Test MSE Anova And Correlation DT:", test_mse_AnovaAndCorr_dt)
+print("Test R2 Score Anova And Correlation DT:", test_r2_score_AnovaAndCorr)

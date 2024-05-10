@@ -1,146 +1,146 @@
 brand,processor_brand,processor_name,processor_gnrtn,ram_gb,ram_type,ssd,hdd,os,graphic_card_gb,weight,warranty,Touchscreen,msoffice,Price,Number of Ratings,Number of Reviews,rating
-Lenovo,Intel,Core i3,11th,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,Yes,57999,10,2,3 stars
-ASUS,Intel,Core i5,10th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,47990,1625,152,4 stars
-ASUS,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,32-bit Windows,6 GB,Casual,1 year,No,No,84990,5,0,5 stars
-MSI,Intel,Core i3,10th,4 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,38990,53,11,4 stars
-APPLE,M1,M1,10th,8 GB,DDR4,512 GB,0 GB,64-bit Mac,0 GB,Casual,1 year,No,No,125990,399,45,4 stars
-ASUS,Intel,Core i7,8th,16 GB,DDR3,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,99990,30,7,4 stars
-HP,Intel,Core i7,11th,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,4 GB,Casual,No warranty,No,No,121990,0,0,3 stars
-Lenovo,Intel,Core i3,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,Yes,No,54990,245,34,4 stars
-HP,Intel,Core i5,10th,8 GB,LPDDR4,0 GB,512 GB,32-bit DOS,4 GB,Casual,No warranty,No,No,102551,0,0,3 stars
-DELL,Intel,Core i5,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,2 GB,Casual,1 year,No,No,69900,0,0,3 stars
-DELL,AMD,Ryzen 3,Not Available,8 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,37390,38,5,4 stars
-DELL,AMD,Ryzen 3,Not Available,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,40590,0,0,3 stars
-ASUS,Intel,Core i3,10th,4 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,40990,0,0,3 stars
-DELL,AMD,Ryzen 3,Not Available,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,39990,7,0,4 stars
-DELL,Intel,Core i3,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,41990,10,5,3 stars
-ASUS,AMD,Ryzen 7,Not Available,4 GB,DDR5,512 GB,0 GB,32-bit Windows,4 GB,Casual,1 year,No,No,111990,0,0,3 stars
-DELL,Intel,Core i3,10th,8 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,39490,1917,189,4 stars
-DELL,Intel,Core i5,10th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,4 GB,Casual,No warranty,No,No,77900,179,34,4 stars
-Avita,Intel,Core i7,8th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,73990,0,0,3 stars
-Lenovo,Intel,Core i3,10th,8 GB,DDR4,0 GB,1024 GB,32-bit Windows,0 GB,Casual,No warranty,No,No,38999,7,2,3 stars
-Lenovo,Intel,Core i3,10th,4 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,Casual,2 years,No,No,38940,758,64,4 stars
-ASUS,AMD,Ryzen 9,Not Available,4 GB,LPDDR4X,1024 GB,0 GB,64-bit Windows,4 GB,Casual,1 year,Yes,No,114990,14,1,4 stars
-HP,Intel,Celeron Dual,Not Available,4 GB,DDR4,0 GB,512 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,27990,596,65,3 stars
-ASUS,AMD,Ryzen 7,Not Available,16 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,No,79990,0,0,3 stars
-HP,AMD,Ryzen 7,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,57999,44,5,4 stars
-Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,Yes,91999,16,2,4 stars
-DELL,Intel,Core i3,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,45930,0,0,3 stars
-HP,AMD,Ryzen 5,Not Available,8 GB,DDR4,512 GB,0 GB,32-bit Windows,0 GB,Casual,No warranty,No,No,48990,17,1,4 stars
-ASUS,Intel,Core i5,10th,8 GB,DDR4,512 GB,0 GB,32-bit Windows,2 GB,Casual,No warranty,No,No,69990,0,0,3 stars
-ASUS,Intel,Core i3,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,No,42990,40,7,4 stars
-Avita,Intel,Core i5,7th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,65556,0,0,3 stars
-DELL,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,59990,31,7,3 stars
-ASUS,Intel,Core i9,10th,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,6 GB,Casual,1 year,Yes,No,269990,8,1,4 stars
-ASUS,Intel,Core i5,11th,16 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,59990,3,0,3 stars
-ASUS,Intel,Core i5,10th,8 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,61249,0,0,3 stars
-Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,2 years,No,Yes,62998,739,71,4 stars
-ASUS,Intel,Core i3,11th,4 GB,DDR4,256 GB,0 GB,32-bit Windows,0 GB,Casual,No warranty,No,No,41990,0,0,3 stars
-Lenovo,Intel,Core i3,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,Yes,53990,299,41,4 stars
-Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,Yes,59990,26,4,4 stars
-ASUS,Intel,Core i5,10th,8 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,46990,1444,179,4 stars
-Lenovo,Intel,Core i7,10th,16 GB,DDR4,512 GB,0 GB,32-bit Windows,2 GB,Casual,No warranty,No,No,162399,0,0,3 stars
-HP,Intel,Core i7,11th,16 GB,LPDDR4X,1024 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,Yes,128500,3,1,3 stars
-DELL,Intel,Core i3,11th,4 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,44427,0,0,3 stars
-DELL,Intel,Core i3,11th,8 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,42190,250,21,3 stars
-HP,Intel,Core i7,11th,16 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,Yes,99999,0,0,3 stars
-ASUS,Intel,Core i5,11th,8 GB,LPDDR4X,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,84990,0,0,3 stars
-acer,AMD,Ryzen 7,Not Available,16 GB,DDR4,256 GB,1024 GB,64-bit Windows,6 GB,Casual,1 year,No,No,89990,272,36,4 stars
-HP,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,57990,1541,123,4 stars
-ASUS,Intel,Core i7,11th,16 GB,DDR4,256 GB,1024 GB,32-bit Windows,0 GB,ThinNlight,No warranty,No,No,82500,0,0,3 stars
-DELL,Intel,Core i3,10th,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,41790,0,0,3 stars
-MSI,Intel,Core i5,10th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,56541,677,87,4 stars
-DELL,AMD,Ryzen 5,Not Available,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,49490,31,3,4 stars
-ASUS,Intel,Core i7,10th,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,6 GB,Casual,1 year,Yes,No,224990,9,0,4 stars
-HP,Intel,Core i5,10th,8 GB,LPDDR4,0 GB,512 GB,32-bit DOS,0 GB,ThinNlight,No warranty,No,No,55990,818,109,4 stars
-DELL,AMD,Ryzen 5,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,Yes,75500,0,0,3 stars
-DELL,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,32-bit Windows,2 GB,Casual,No warranty,No,No,73519,0,0,3 stars
-acer,Intel,Core i7,10th,16 GB,DDR4,256 GB,1024 GB,64-bit Windows,6 GB,Casual,1 year,No,No,119990,2038,313,4 stars
-MSI,Intel,Core i7,11th,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,4 GB,Casual,2 years,Yes,No,154990,3,2,4 stars
-HP,Intel,Core i5,11th,16 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,74490,10,0,4 stars
-ASUS,Intel,Core i7,10th,16 GB,DDR4,0 GB,1024 GB,64-bit Windows,2 GB,Casual,No warranty,No,No,93990,0,0,3 stars
-HP,Intel,Core i3,11th,4 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,39990,324,45,3 stars
-APPLE,M1,M1,10th,16 GB,DDR4,1024 GB,0 GB,64-bit Mac,0 GB,Casual,1 year,No,No,225990,42,8,4 stars
-DELL,AMD,Ryzen 7,Not Available,16 GB,DDR4,512 GB,0 GB,64-bit Windows,4 GB,Casual,1 year,No,No,93990,0,0,3 stars
-ASUS,Intel,Celeron Dual,Not Available,4 GB,LPDDR4,0 GB,512 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,18990,197,25,3 stars
-Lenovo,Intel,Core i7,11th,16 GB,DDR4,512 GB,0 GB,32-bit Windows,0 GB,Casual,No warranty,Yes,No,88488,0,0,3 stars
-ASUS,Intel,Core i7,11th,16 GB,DDR4,1024 GB,0 GB,32-bit Windows,4 GB,Casual,1 year,No,No,194990,0,0,3 stars
-ASUS,Intel,Core i5,11th,16 GB,DDR4,512 GB,0 GB,64-bit Windows,6 GB,Gaming,1 year,No,Yes,89990,124,17,4 stars
-Lenovo,Intel,Core i5,10th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,113590,0,0,3 stars
-ASUS,Intel,Core i7,10th,16 GB,LPDDR3,2048 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,233990,0,0,3 stars
-MSI,Intel,Core i7,11th,16 GB,LPDDR4X,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,No,89990,0,0,3 stars
-MSI,AMD,Ryzen 5,Not Available,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,47990,562,89,4 stars
-ASUS,Intel,Core i3,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,37990,284,39,4 stars
-ASUS,AMD,Ryzen 3,Not Available,4 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,33690,170,26,4 stars
-DELL,Intel,Core i5,10th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,79500,10,1,4 stars
-Lenovo,Intel,Celeron Dual,Not Available,4 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,31799,0,0,3 stars
-HP,Intel,Core i3,11th,4 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,44900,1029,107,4 stars
-DELL,AMD,Ryzen 5,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,4 GB,Casual,1 year,No,No,98920,0,0,3 stars
-ASUS,Intel,Core i5,11th,8 GB,LPDDR4X,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,No,99990,35,6,4 stars
-DELL,Intel,Core i5,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,2 GB,Casual,No warranty,No,No,67490,41,5,3 stars
-ASUS,Intel,Core i5,11th,16 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,Yes,58990,0,0,3 stars
-ASUS,Intel,Core i5,9th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,4 GB,Gaming,No warranty,No,No,54490,343,47,4 stars
-HP,AMD,Ryzen 5,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,53490,826,118,4 stars
-Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,53990,61,2,4 stars
-DELL,Intel,Core i5,10th,8 GB,LPDDR4X,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,111890,0,0,3 stars
-Avita,Intel,Core i7,8th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,73990,0,0,3 stars
-DELL,Intel,Core i3,10th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,39490,1267,171,4 stars
-ASUS,AMD,Ryzen 7,Not Available,8 GB,LPDDR4X,1024 GB,0 GB,64-bit Windows,4 GB,Casual,No warranty,No,No,72990,198,24,4 stars
-HP,Intel,Core i5,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,No,65390,0,0,3 stars
-Lenovo,AMD,Ryzen 5,Not Available,8 GB,DDR4,512 GB,0 GB,64-bit Windows,4 GB,Gaming,No warranty,No,No,59490,92,10,4 stars
-ASUS,AMD,Ryzen 9,Not Available,4 GB,LPDDR4X,1024 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,Yes,No,134990,0,0,3 stars
-DELL,Intel,Core i5,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,54990,353,28,3 stars
-ASUS,Intel,Core i3,10th,4 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,Casual,1 year,No,No,35990,17,0,3 stars
-DELL,Intel,Core i5,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,2 GB,Casual,No warranty,No,No,71695,153,16,4 stars
-HP,AMD,Ryzen 3,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,44490,267,42,4 stars
-DELL,Intel,Core i5,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,Casual,1 year,No,Yes,58990,114,9,4 stars
-acer,Intel,Core i5,Not Available,8 GB,LPDDR4,0 GB,512 GB,32-bit Windows,0 GB,Casual,1 year,No,No,119990,1,1,4 stars
-ASUS,Intel,Core i7,8th,8 GB,LPDDR3,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,81990,40,4,4 stars
-HP,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,53990,206,17,4 stars
-ASUS,AMD,Ryzen 7,Not Available,4 GB,LPDDR4X,1024 GB,0 GB,64-bit Windows,4 GB,Casual,1 year,Yes,No,99990,77,15,4 stars
-acer,Intel,Core i7,11th,16 GB,DDR4,512 GB,1024 GB,32-bit Windows,6 GB,Casual,1 year,No,No,119990,342,54,4 stars
-ASUS,AMD,Ryzen 7,Not Available,4 GB,DDR5,512 GB,0 GB,64-bit Windows,4 GB,Casual,No warranty,No,No,106990,0,0,3 stars
-HP,Intel,Core i3,11th,4 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,39790,40,3,3 stars
-Avita,Intel,Core i5,8th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,73063,17,3,3 stars
-acer,Intel,Core i3,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,40990,38,2,4 stars
-DELL,Intel,Core i3,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,48990,724,92,4 stars
-ASUS,Intel,Pentium Quad,Not Available,4 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,30780,0,0,3 stars
-HP,AMD,Ryzen 7,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,68500,134,22,4 stars
-ASUS,Intel,Core i9,11th,16 GB,DDR4,3072 GB,0 GB,32-bit Windows,6 GB,Casual,1 year,No,No,441990,1,1,5 stars
-HP,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,58340,69,6,4 stars
-Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,55990,0,0,3 stars
-Lenovo,Intel,Core i3,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,38990,33,4,4 stars
-HP,Intel,Core i3,10th,4 GB,DDR4,512 GB,0 GB,32-bit Windows,0 GB,Casual,No warranty,No,No,38799,30,1,4 stars
-MSI,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,4 GB,Casual,2 years,No,No,74990,0,0,3 stars
-ASUS,Intel,Core i3,11th,8 GB,LPDDR4X,512 GB,0 GB,32-bit Windows,0 GB,Casual,1 year,Yes,Yes,51990,6,2,4 stars
-APPLE,M1,M1,10th,8 GB,DDR4,256 GB,0 GB,64-bit Mac,0 GB,Casual,1 year,No,No,85990,6725,629,4 stars
-acer,Intel,Core i5,8th,8 GB,DDR3,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,Yes,Yes,81998,14,3,4 stars
-ASUS,Intel,Core i3,10th,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,39990,2551,297,4 stars
-ASUS,Intel,Core i5,11th,16 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,Casual,1 year,No,Yes,64990,328,51,4 stars
-ASUS,Intel,Core i3,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,No,45990,816,147,4 stars
-DELL,Intel,Core i5,10th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,2 GB,Casual,1 year,No,Yes,82990,15,3,3 stars
-acer,Intel,Core i5,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,56990,27,2,4 stars
-ASUS,Intel,Core i7,11th,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,4 GB,Gaming,No warranty,No,No,98990,445,56,4 stars
-ASUS,Intel,Core i3,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,No,45990,816,147,4 stars
-ASUS,AMD,Ryzen 9,Not Available,4 GB,DDR4,1024 GB,0 GB,64-bit Windows,4 GB,Casual,1 year,No,No,162990,0,0,3 stars
-Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,3 years,Yes,Yes,64990,48,12,4 stars
-acer,Intel,Core i7,11th,16 GB,DDR4,512 GB,1024 GB,64-bit Windows,4 GB,Casual,1 year,No,No,92990,214,37,4 stars
-Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,32-bit Windows,0 GB,Casual,1 year,No,Yes,77990,17,2,4 stars
-MSI,Intel,Core i7,11th,16 GB,DDR4,512 GB,0 GB,64-bit Windows,4 GB,Casual,2 years,No,No,94990,0,0,3 stars
-Lenovo,Intel,Core i7,10th,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,8 GB,Casual,1 year,No,Yes,234990,0,0,3 stars
-MSI,AMD,Ryzen 7,Not Available,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,8 GB,Casual,1 year,No,No,99990,108,24,4 stars
-ASUS,Intel,Core i3,10th,4 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,38000,7,0,4 stars
-ASUS,Intel,Celeron Dual,Not Available,4 GB,LPDDR4,0 GB,512 GB,32-bit Windows,0 GB,Casual,No warranty,No,No,17990,1180,148,3 stars
-HP,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,63990,3,0,4 stars
-MSI,AMD,Ryzen 5,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,54990,1410,203,4 stars
-Lenovo,Intel,Core i7,10th,16 GB,LPDDR3,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,211753,0,0,3 stars
-ASUS,AMD,Ryzen 5,Not Available,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,Casual,1 year,No,No,54990,49,6,4 stars
-ASUS,Intel,Core i5,11th,8 GB,LPDDR4X,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,No,105990,59,11,4 stars
-MSI,Intel,Core i7,10th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,57990,15,0,4 stars
-Lenovo,Intel,Core i3,10th,8 GB,DDR4,256 GB,0 GB,32-bit Windows,0 GB,Casual,No warranty,No,No,38970,0,0,3 stars
-ASUS,Intel,Core i3,10th,4 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,33990,31,6,3 stars
-MSI,Intel,Core i3,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,48990,17,3,4 stars
-ASUS,Intel,Core i7,11th,16 GB,LPDDR4X,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,Yes,No,109990,0,0,3 stars
-DELL,AMD,Ryzen 5,Not Available,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,59490,0,0,3 stars
-ASUS,AMD,Ryzen 7,Not Available,4 GB,DDR5,1024 GB,0 GB,32-bit Windows,4 GB,Casual,1 year,No,No,114990,0,0,3 stars
-APPLE,M1,M1,10th,8 GB,DDR4,256 GB,0 GB,64-bit Mac,0 GB,Casual,1 year,No,No,112990,640,70,4 stars
+Lenovo,Intel,Core i3,11th,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,Yes,57999,10,2,Bad Rating
+ASUS,Intel,Core i5,10th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,47990,1625,152,Good Rating
+ASUS,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,32-bit Windows,6 GB,Casual,1 year,No,No,84990,5,0,Good Rating
+MSI,Intel,Core i3,10th,4 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,38990,53,11,Good Rating
+APPLE,M1,M1,10th,8 GB,DDR4,512 GB,0 GB,64-bit Mac,0 GB,Casual,1 year,No,No,125990,399,45,Good Rating
+ASUS,Intel,Core i7,8th,16 GB,DDR3,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,99990,30,7,Good Rating
+HP,Intel,Core i7,11th,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,4 GB,Casual,No warranty,No,No,121990,0,0,Bad Rating
+Lenovo,Intel,Core i3,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,Yes,No,54990,245,34,Good Rating
+HP,Intel,Core i5,10th,8 GB,LPDDR4,0 GB,512 GB,32-bit DOS,4 GB,Casual,No warranty,No,No,102551,0,0,Bad Rating
+DELL,Intel,Core i5,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,2 GB,Casual,1 year,No,No,69900,0,0,Bad Rating
+DELL,AMD,Ryzen 3,Not Available,8 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,37390,38,5,Good Rating
+DELL,AMD,Ryzen 3,Not Available,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,40590,0,0,Bad Rating
+ASUS,Intel,Core i3,10th,4 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,40990,0,0,Bad Rating
+DELL,AMD,Ryzen 3,Not Available,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,39990,7,0,Good Rating
+DELL,Intel,Core i3,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,41990,10,5,Bad Rating
+ASUS,AMD,Ryzen 7,Not Available,4 GB,DDR5,512 GB,0 GB,32-bit Windows,4 GB,Casual,1 year,No,No,111990,0,0,Bad Rating
+DELL,Intel,Core i3,10th,8 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,39490,1917,189,Good Rating
+DELL,Intel,Core i5,10th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,4 GB,Casual,No warranty,No,No,77900,179,34,Good Rating
+Avita,Intel,Core i7,8th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,73990,0,0,Bad Rating
+Lenovo,Intel,Core i3,10th,8 GB,DDR4,0 GB,1024 GB,32-bit Windows,0 GB,Casual,No warranty,No,No,38999,7,2,Bad Rating
+Lenovo,Intel,Core i3,10th,4 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,Casual,2 years,No,No,38940,758,64,Good Rating
+ASUS,AMD,Ryzen 9,Not Available,4 GB,LPDDR4X,1024 GB,0 GB,64-bit Windows,4 GB,Casual,1 year,Yes,No,114990,14,1,Good Rating
+HP,Intel,Celeron Dual,Not Available,4 GB,DDR4,0 GB,512 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,27990,596,65,Bad Rating
+ASUS,AMD,Ryzen 7,Not Available,16 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,No,79990,0,0,Bad Rating
+HP,AMD,Ryzen 7,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,57999,44,5,Good Rating
+Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,Yes,91999,16,2,Good Rating
+DELL,Intel,Core i3,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,45930,0,0,Bad Rating
+HP,AMD,Ryzen 5,Not Available,8 GB,DDR4,512 GB,0 GB,32-bit Windows,0 GB,Casual,No warranty,No,No,48990,17,1,Good Rating
+ASUS,Intel,Core i5,10th,8 GB,DDR4,512 GB,0 GB,32-bit Windows,2 GB,Casual,No warranty,No,No,69990,0,0,Bad Rating
+ASUS,Intel,Core i3,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,No,42990,40,7,Good Rating
+Avita,Intel,Core i5,7th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,65556,0,0,Bad Rating
+DELL,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,59990,31,7,Bad Rating
+ASUS,Intel,Core i9,10th,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,6 GB,Casual,1 year,Yes,No,269990,8,1,Good Rating
+ASUS,Intel,Core i5,11th,16 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,59990,3,0,Bad Rating
+ASUS,Intel,Core i5,10th,8 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,61249,0,0,Bad Rating
+Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,2 years,No,Yes,62998,739,71,Good Rating
+ASUS,Intel,Core i3,11th,4 GB,DDR4,256 GB,0 GB,32-bit Windows,0 GB,Casual,No warranty,No,No,41990,0,0,Bad Rating
+Lenovo,Intel,Core i3,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,Yes,53990,299,41,Good Rating
+Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,Yes,59990,26,4,Good Rating
+ASUS,Intel,Core i5,10th,8 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,46990,1444,179,Good Rating
+Lenovo,Intel,Core i7,10th,16 GB,DDR4,512 GB,0 GB,32-bit Windows,2 GB,Casual,No warranty,No,No,162399,0,0,Bad Rating
+HP,Intel,Core i7,11th,16 GB,LPDDR4X,1024 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,Yes,128500,3,1,Bad Rating
+DELL,Intel,Core i3,11th,4 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,44427,0,0,Bad Rating
+DELL,Intel,Core i3,11th,8 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,42190,250,21,Bad Rating
+HP,Intel,Core i7,11th,16 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,Yes,99999,0,0,Bad Rating
+ASUS,Intel,Core i5,11th,8 GB,LPDDR4X,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,84990,0,0,Bad Rating
+acer,AMD,Ryzen 7,Not Available,16 GB,DDR4,256 GB,1024 GB,64-bit Windows,6 GB,Casual,1 year,No,No,89990,272,36,Good Rating
+HP,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,57990,1541,123,Good Rating
+ASUS,Intel,Core i7,11th,16 GB,DDR4,256 GB,1024 GB,32-bit Windows,0 GB,ThinNlight,No warranty,No,No,82500,0,0,Bad Rating
+DELL,Intel,Core i3,10th,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,41790,0,0,Bad Rating
+MSI,Intel,Core i5,10th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,56541,677,87,Good Rating
+DELL,AMD,Ryzen 5,Not Available,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,49490,31,3,Good Rating
+ASUS,Intel,Core i7,10th,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,6 GB,Casual,1 year,Yes,No,224990,9,0,Good Rating
+HP,Intel,Core i5,10th,8 GB,LPDDR4,0 GB,512 GB,32-bit DOS,0 GB,ThinNlight,No warranty,No,No,55990,818,109,Good Rating
+DELL,AMD,Ryzen 5,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,Yes,75500,0,0,Bad Rating
+DELL,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,32-bit Windows,2 GB,Casual,No warranty,No,No,73519,0,0,Bad Rating
+acer,Intel,Core i7,10th,16 GB,DDR4,256 GB,1024 GB,64-bit Windows,6 GB,Casual,1 year,No,No,119990,2038,313,Good Rating
+MSI,Intel,Core i7,11th,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,4 GB,Casual,2 years,Yes,No,154990,3,2,Good Rating
+HP,Intel,Core i5,11th,16 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,74490,10,0,Good Rating
+ASUS,Intel,Core i7,10th,16 GB,DDR4,0 GB,1024 GB,64-bit Windows,2 GB,Casual,No warranty,No,No,93990,0,0,Bad Rating
+HP,Intel,Core i3,11th,4 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,39990,324,45,Bad Rating
+APPLE,M1,M1,10th,16 GB,DDR4,1024 GB,0 GB,64-bit Mac,0 GB,Casual,1 year,No,No,225990,42,8,Good Rating
+DELL,AMD,Ryzen 7,Not Available,16 GB,DDR4,512 GB,0 GB,64-bit Windows,4 GB,Casual,1 year,No,No,93990,0,0,Bad Rating
+ASUS,Intel,Celeron Dual,Not Available,4 GB,LPDDR4,0 GB,512 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,18990,197,25,Bad Rating
+Lenovo,Intel,Core i7,11th,16 GB,DDR4,512 GB,0 GB,32-bit Windows,0 GB,Casual,No warranty,Yes,No,88488,0,0,Bad Rating
+ASUS,Intel,Core i7,11th,16 GB,DDR4,1024 GB,0 GB,32-bit Windows,4 GB,Casual,1 year,No,No,194990,0,0,Bad Rating
+ASUS,Intel,Core i5,11th,16 GB,DDR4,512 GB,0 GB,64-bit Windows,6 GB,Gaming,1 year,No,Yes,89990,124,17,Good Rating
+Lenovo,Intel,Core i5,10th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,113590,0,0,Bad Rating
+ASUS,Intel,Core i7,10th,16 GB,LPDDR3,2048 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,233990,0,0,Bad Rating
+MSI,Intel,Core i7,11th,16 GB,LPDDR4X,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,No,89990,0,0,Bad Rating
+MSI,AMD,Ryzen 5,Not Available,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,47990,562,89,Good Rating
+ASUS,Intel,Core i3,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,37990,284,39,Good Rating
+ASUS,AMD,Ryzen 3,Not Available,4 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,33690,170,26,Good Rating
+DELL,Intel,Core i5,10th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,79500,10,1,Good Rating
+Lenovo,Intel,Celeron Dual,Not Available,4 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,31799,0,0,Bad Rating
+HP,Intel,Core i3,11th,4 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,44900,1029,107,Good Rating
+DELL,AMD,Ryzen 5,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,4 GB,Casual,1 year,No,No,98920,0,0,Bad Rating
+ASUS,Intel,Core i5,11th,8 GB,LPDDR4X,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,No,99990,35,6,Good Rating
+DELL,Intel,Core i5,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,2 GB,Casual,No warranty,No,No,67490,41,5,Bad Rating
+ASUS,Intel,Core i5,11th,16 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,Yes,58990,0,0,Bad Rating
+ASUS,Intel,Core i5,9th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,4 GB,Gaming,No warranty,No,No,54490,343,47,Good Rating
+HP,AMD,Ryzen 5,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,53490,826,118,Good Rating
+Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,53990,61,2,Good Rating
+DELL,Intel,Core i5,10th,8 GB,LPDDR4X,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,111890,0,0,Bad Rating
+Avita,Intel,Core i7,8th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,73990,0,0,Bad Rating
+DELL,Intel,Core i3,10th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,39490,1267,171,Good Rating
+ASUS,AMD,Ryzen 7,Not Available,8 GB,LPDDR4X,1024 GB,0 GB,64-bit Windows,4 GB,Casual,No warranty,No,No,72990,198,24,Good Rating
+HP,Intel,Core i5,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,No,65390,0,0,Bad Rating
+Lenovo,AMD,Ryzen 5,Not Available,8 GB,DDR4,512 GB,0 GB,64-bit Windows,4 GB,Gaming,No warranty,No,No,59490,92,10,Good Rating
+ASUS,AMD,Ryzen 9,Not Available,4 GB,LPDDR4X,1024 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,Yes,No,134990,0,0,Bad Rating
+DELL,Intel,Core i5,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,54990,353,28,Bad Rating
+ASUS,Intel,Core i3,10th,4 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,Casual,1 year,No,No,35990,17,0,Bad Rating
+DELL,Intel,Core i5,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,2 GB,Casual,No warranty,No,No,71695,153,16,Good Rating
+HP,AMD,Ryzen 3,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,44490,267,42,Good Rating
+DELL,Intel,Core i5,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,Casual,1 year,No,Yes,58990,114,9,Good Rating
+acer,Intel,Core i5,Not Available,8 GB,LPDDR4,0 GB,512 GB,32-bit Windows,0 GB,Casual,1 year,No,No,119990,1,1,Good Rating
+ASUS,Intel,Core i7,8th,8 GB,LPDDR3,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,81990,40,4,Good Rating
+HP,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,53990,206,17,Good Rating
+ASUS,AMD,Ryzen 7,Not Available,4 GB,LPDDR4X,1024 GB,0 GB,64-bit Windows,4 GB,Casual,1 year,Yes,No,99990,77,15,Good Rating
+acer,Intel,Core i7,11th,16 GB,DDR4,512 GB,1024 GB,32-bit Windows,6 GB,Casual,1 year,No,No,119990,342,54,Good Rating
+ASUS,AMD,Ryzen 7,Not Available,4 GB,DDR5,512 GB,0 GB,64-bit Windows,4 GB,Casual,No warranty,No,No,106990,0,0,Bad Rating
+HP,Intel,Core i3,11th,4 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,39790,40,3,Bad Rating
+Avita,Intel,Core i5,8th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,73063,17,3,Bad Rating
+acer,Intel,Core i3,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,40990,38,2,Good Rating
+DELL,Intel,Core i3,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,48990,724,92,Good Rating
+ASUS,Intel,Pentium Quad,Not Available,4 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,30780,0,0,Bad Rating
+HP,AMD,Ryzen 7,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,68500,134,22,Good Rating
+ASUS,Intel,Core i9,11th,16 GB,DDR4,3072 GB,0 GB,32-bit Windows,6 GB,Casual,1 year,No,No,441990,1,1,Good Rating
+HP,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,58340,69,6,Good Rating
+Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,55990,0,0,Bad Rating
+Lenovo,Intel,Core i3,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,38990,33,4,Good Rating
+HP,Intel,Core i3,10th,4 GB,DDR4,512 GB,0 GB,32-bit Windows,0 GB,Casual,No warranty,No,No,38799,30,1,Good Rating
+MSI,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,4 GB,Casual,2 years,No,No,74990,0,0,Bad Rating
+ASUS,Intel,Core i3,11th,8 GB,LPDDR4X,512 GB,0 GB,32-bit Windows,0 GB,Casual,1 year,Yes,Yes,51990,6,2,Good Rating
+APPLE,M1,M1,10th,8 GB,DDR4,256 GB,0 GB,64-bit Mac,0 GB,Casual,1 year,No,No,85990,6725,629,Good Rating
+acer,Intel,Core i5,8th,8 GB,DDR3,256 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,Yes,Yes,81998,14,3,Good Rating
+ASUS,Intel,Core i3,10th,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,39990,2551,297,Good Rating
+ASUS,Intel,Core i5,11th,16 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,Casual,1 year,No,Yes,64990,328,51,Good Rating
+ASUS,Intel,Core i3,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,No,45990,816,147,Good Rating
+DELL,Intel,Core i5,10th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,2 GB,Casual,1 year,No,Yes,82990,15,3,Bad Rating
+acer,Intel,Core i5,11th,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,No,56990,27,2,Good Rating
+ASUS,Intel,Core i7,11th,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,4 GB,Gaming,No warranty,No,No,98990,445,56,Good Rating
+ASUS,Intel,Core i3,11th,8 GB,DDR4,256 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,No,No,45990,816,147,Good Rating
+ASUS,AMD,Ryzen 9,Not Available,4 GB,DDR4,1024 GB,0 GB,64-bit Windows,4 GB,Casual,1 year,No,No,162990,0,0,Bad Rating
+Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,3 years,Yes,Yes,64990,48,12,Good Rating
+acer,Intel,Core i7,11th,16 GB,DDR4,512 GB,1024 GB,64-bit Windows,4 GB,Casual,1 year,No,No,92990,214,37,Good Rating
+Lenovo,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,32-bit Windows,0 GB,Casual,1 year,No,Yes,77990,17,2,Good Rating
+MSI,Intel,Core i7,11th,16 GB,DDR4,512 GB,0 GB,64-bit Windows,4 GB,Casual,2 years,No,No,94990,0,0,Bad Rating
+Lenovo,Intel,Core i7,10th,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,8 GB,Casual,1 year,No,Yes,234990,0,0,Bad Rating
+MSI,AMD,Ryzen 7,Not Available,16 GB,DDR4,1024 GB,0 GB,64-bit Windows,8 GB,Casual,1 year,No,No,99990,108,24,Good Rating
+ASUS,Intel,Core i3,10th,4 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,38000,7,0,Good Rating
+ASUS,Intel,Celeron Dual,Not Available,4 GB,LPDDR4,0 GB,512 GB,32-bit Windows,0 GB,Casual,No warranty,No,No,17990,1180,148,Bad Rating
+HP,Intel,Core i5,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,63990,3,0,Good Rating
+MSI,AMD,Ryzen 5,Not Available,4 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,Casual,No warranty,No,No,54990,1410,203,Good Rating
+Lenovo,Intel,Core i7,10th,16 GB,LPDDR3,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,211753,0,0,Bad Rating
+ASUS,AMD,Ryzen 5,Not Available,8 GB,DDR4,256 GB,1024 GB,64-bit Windows,0 GB,Casual,1 year,No,No,54990,49,6,Good Rating
+ASUS,Intel,Core i5,11th,8 GB,LPDDR4X,512 GB,0 GB,64-bit Windows,0 GB,Casual,1 year,Yes,No,105990,59,11,Good Rating
+MSI,Intel,Core i7,10th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,57990,15,0,Good Rating
+Lenovo,Intel,Core i3,10th,8 GB,DDR4,256 GB,0 GB,32-bit Windows,0 GB,Casual,No warranty,No,No,38970,0,0,Bad Rating
+ASUS,Intel,Core i3,10th,4 GB,DDR4,0 GB,1024 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,33990,31,6,Bad Rating
+MSI,Intel,Core i3,11th,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,No,No,48990,17,3,Good Rating
+ASUS,Intel,Core i7,11th,16 GB,LPDDR4X,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,No warranty,Yes,No,109990,0,0,Bad Rating
+DELL,AMD,Ryzen 5,Not Available,8 GB,DDR4,512 GB,0 GB,64-bit Windows,0 GB,ThinNlight,1 year,No,Yes,59490,0,0,Bad Rating
+ASUS,AMD,Ryzen 7,Not Available,4 GB,DDR5,1024 GB,0 GB,32-bit Windows,4 GB,Casual,1 year,No,No,114990,0,0,Bad Rating
+APPLE,M1,M1,10th,8 GB,DDR4,256 GB,0 GB,64-bit Mac,0 GB,Casual,1 year,No,No,112990,640,70,Good Rating

@@ -18,6 +18,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVR
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
+from sklearn.model_selection import KFold
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 
@@ -290,7 +291,8 @@ categorical_train_df = X_train[selected_categorical_columns].copy()
 numerical_validation_df = X_validate[selected_numerical_columns].copy()
 categorical_validation_df = X_validate[selected_categorical_columns].copy()
 
-k = 7     # or 5
+
+k = 7
 selector = SelectKBest(f_classif, k=k)
 X_selected_Anova_train = selector.fit_transform(categorical_train_df, y_train)
 selected_feature_indices_anova_train = selector.get_support(indices=True)
@@ -306,22 +308,26 @@ top_feature = corr.index[abs(corr['rating']) > 0.1]
 plt.subplots(figsize=(12, 8))
 top_corr = numerical_train_df[top_feature].corr()
 sns.heatmap(top_corr, annot=True)
-plt.show()
+#plt.show()
 top_feature = top_feature.delete(-1)
 X_corr_train = numerical_train_df[top_feature]
-print(top_feature)
-print(selected_features_anova)
+
 
 X_selected_Anova_Validation_df = pd.DataFrame()
 for column in selected_features_anova:
     X_selected_Anova_Validation_df[column] = categorical_validation_df[column]
 
+
+
 X_selected_validation_corr_df = pd.DataFrame()
 for column in top_feature:
     X_selected_validation_corr_df[column] = numerical_validation_df[column]
 
+
 all_selectedFeatures_df_train = pd.concat([X_corr_train, X_selected_Anova_train_df], axis=1)
 all_selectedFeatures_df_test = pd.concat([X_selected_validation_corr_df, X_selected_Anova_Validation_df], axis=1)
+
+
 
 
 # Feature Selection Using Forward and Backward Methods
@@ -350,6 +356,8 @@ for column in selected_features_forward_train:
     x_after_feature_selection_forward_train[column_name] = column_values_train
     x_after_feature_selection_forward_validate[column_name] = column_values_test
 
+
+
 # x_after_feature_selection_forward_test.to_csv('forward.csv', index=False)
 
 for column in selected_features_backward_train:
@@ -360,6 +368,8 @@ for column in selected_features_backward_train:
     x_after_feature_selection_backward_train[column_name] = column_values_train
     x_after_feature_selection_backward_validate[column_name] = column_values_test
 
+
+
 # x_after_feature_selection_backward_test.to_csv('backward.csv', index=False)
 
 y_train = y_train.values.flatten()
@@ -368,6 +378,37 @@ y_validate = y_validate.values.flatten()
 linear_model_forward = linear_model.LinearRegression()
 linear_model_backward = linear_model.LinearRegression()
 linear_model_anovaAndcorr = linear_model.LinearRegression()
+
+cv = 5
+kf = KFold(n_splits=cv)
+
+mse_scores = []
+
+# Perform k-fold cross-validation
+for train_index, test_index in kf.split(x_after_feature_selection_forward_train):
+    X_train_fold, X_test_fold = x_after_feature_selection_forward_train.iloc[train_index], x_after_feature_selection_forward_train.iloc[test_index]
+    y_train_fold, y_test_fold = y_train[train_index], y_train[test_index]
+    
+    # Train the model
+    linear_model_forward.fit(X_train_fold, y_train_fold)
+    
+    # Make predictions on the test fold
+    y_pred_fold = linear_model_forward.predict(X_test_fold)
+    
+    # Calculate mean squared error
+    mse = mean_squared_error(y_test_fold, y_pred_fold)
+    r2s = r2_score(y_test_fold,y_pred_fold)
+    
+    # Store the mean squared error
+    mse_scores.append(mse)
+    
+
+
+# Calculate the average mean squared error across all folds
+avg_mse = np.mean(mse_scores)
+print("Average Mean Squared Error:", avg_mse)
+
+
 
 linear_model_forward.fit(x_after_feature_selection_forward_train, y_train)
 y_forward_train_predicted = linear_model_forward.predict(x_after_feature_selection_forward_train)
@@ -592,3 +633,13 @@ with open('MyTrainModel.pkl', 'wb') as f:
     pickle.dump(dt_regressor_forward, f)
     pickle.dump(dt_regressor_backward, f)
 
+with open('AnovaAndCorr','wb') as f:
+    pickle.dump(all_selectedFeatures_df_train.columns, f)
+    pickle.dump(linear_model_anovaAndcorr, f)
+
+    pickle.dump(poly_feature_anovaAndcorr,f)
+    pickle.dump(poly_model_anovaAndcorr, f)
+   
+    pickle.dump(svr_anovaAndcorr, f)
+
+    pickle.dump(dt_regressor_anovaAndcorr, f)

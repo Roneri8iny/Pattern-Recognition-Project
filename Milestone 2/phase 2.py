@@ -24,9 +24,10 @@ import seaborn as sns
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVC
 from sklearn.feature_selection import SelectKBest, mutual_info_classif, f_classif
+import time
 
 warnings.filterwarnings("ignore", category=FutureWarning)
-data = pd.read_csv("ElecDeviceRatingPrediction_Milestone2.csv")
+data = pd.read_csv("C:\\Users\\aliaa\\OneDrive\\Desktop\\Pattern-Recognition-Project\\Milestone 2\\ElecDeviceRatingPrediction_Milestone2.csv")
 new_data = data
 
 ram_categories = ['4 GB', '8 GB', '16 GB', '32 GB']
@@ -323,38 +324,75 @@ with open('Cfeatures.pkl', 'wb') as f:
     pickle.dump(all_selectedFeatures_df_train.columns, f)
 
 
-y_train = y_train.values.flatten()
-y_validation = y_validation.values.flatten()
+# y_train = y_train.values.flatten()
+# y_validation = y_validation.values.flatten()
+
 
 logistic_model = linear_model.LogisticRegression(C=0.1)
 
+start_time = time.time()
 logistic_model.fit(all_selectedFeatures_df_train, y_train)
+end_time = time.time()
+
+training_time_Logistic_regression = end_time - start_time
+
 y_forward_train_predicted = logistic_model.predict(all_selectedFeatures_df_train)
 
+start_time = time.time()
 y_predict_forward_test = logistic_model.predict(all_selectedFeatures_df_test)
+end_time = time.time()
+
+testing_time_Logistic_regression = end_time - start_time
 
 print('Logistic Regression Accuracy Train',
       metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted))
 print('Logistic Regression Accuracy Test',
       metrics.accuracy_score(np.asarray(y_validation), y_predict_forward_test))
 
+Accuracy_Train_Logistic_regrssion = metrics.accuracy_score(np.asarray(y_train), y_forward_train_predicted)
+Accuracy_Testing_Logistic_regrssion = metrics.accuracy_score(np.asarray(y_validation), y_predict_forward_test)
+
 classifier = SVC()
 
+start_time = time.time()
 classifier.fit(all_selectedFeatures_df_train, y_train)
+end_time = time.time()
+
+SVC_Training_time = end_time - start_time
+
 y_train_predicted = classifier.predict(all_selectedFeatures_df_train)
+
+start_time = time.time()
 y_predict_test = classifier.predict(all_selectedFeatures_df_test)
+end_time = time.time()
+
+SVC_Testing_time = end_time - start_time
 
 print('SVC Accuracy Train', metrics.accuracy_score(np.asarray(y_train), y_train_predicted))
 print('SVC Accuracy Test', metrics.accuracy_score(np.asarray(y_validation), y_predict_test))
+
+SVC_Accuracy_train = metrics.accuracy_score(np.asarray(y_train), y_train_predicted)
+SVC_Accuracy_test = metrics.accuracy_score(np.asarray(y_validation), y_predict_test)
+
 
 # Decision Tree
 max_depth = 10
 dt = DecisionTreeClassifier(max_depth=max_depth)
 
+start_time = time.time()
 dt.fit(all_selectedFeatures_df_train, y_train)
+end_time = time.time()
 
+DT_Training_time = end_time - start_time
+
+DecisionTreeClassifier
 y_train_predict_dt = dt.predict(all_selectedFeatures_df_train)
+
+start_time = time.time()
 y_test_predict_dt = dt.predict(all_selectedFeatures_df_test)
+end_time = time.time()
+
+DT_Testing_time = end_time - start_time
 
 train_accuracy_dt = accuracy_score(y_train, y_train_predict_dt)
 test_accuracy_dt = accuracy_score(y_validation, y_test_predict_dt)
@@ -365,10 +403,19 @@ print("Test Accuracy DT:", test_accuracy_dt)
 # Random Forest
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
 
+start_time = time.time()
 rf.fit(all_selectedFeatures_df_train, y_train)
+end_time = time.time()
+
+rf_training_time = end_time - start_time
 
 y_train_predict_rf = rf.predict(all_selectedFeatures_df_train)
+
+start_time = time.time()
 y_test_predict_rf = rf.predict(all_selectedFeatures_df_test)
+end_time = time.time()
+
+rf_testing_time = end_time - start_time
 
 train_accuracy_rf = accuracy_score(y_train, y_train_predict_rf)
 test_accuracy_rf = accuracy_score(y_validation, y_test_predict_rf)
@@ -379,10 +426,19 @@ print("Test Accuracy Random Forest:", test_accuracy_rf)
 # KNN
 knn = KNeighborsClassifier(n_neighbors=7)
 
+start_time = time.time()
 knn.fit(all_selectedFeatures_df_train, y_train)
+end_time = time.time()
+
+Knn_training_time = end_time - start_time
 
 y_train_predict_knn = knn.predict(all_selectedFeatures_df_train)
+
+start_time = time.time()
 y_test_predict_knn = knn.predict(all_selectedFeatures_df_test)
+end_time = time.time()
+
+Knn_testing_time = end_time - start_time
 
 train_accuracy_knn = accuracy_score(y_train, y_train_predict_knn)
 test_accuracy_knn = accuracy_score(y_validation, y_test_predict_knn)
@@ -393,10 +449,19 @@ print("Test Accuracy KNN:", test_accuracy_knn)
 # XGBOOST
 xgboost = xgb.XGBClassifier()
 
+start_time = time.time()
 xgboost.fit(all_selectedFeatures_df_train, y_train)
+end_time = time.time()
+
+xgboost_training_time= end_time - start_time
 
 y_train_predict_xgb = xgboost.predict(all_selectedFeatures_df_train)
+
+start_time = time.time()
 y_test_predict_xgb = xgboost.predict(all_selectedFeatures_df_test)
+end_time = time.time()
+
+xgboost_testing_time= end_time - start_time
 
 train_accuracy_xgb = accuracy_score(y_train, y_train_predict_xgb)
 test_accuracy_xgb = accuracy_score(y_validation, y_test_predict_xgb)
@@ -408,10 +473,19 @@ print("Test Accuracy XGBOOST:", test_accuracy_xgb)
 n_estimators_ada = 250
 ada = AdaBoostClassifier(n_estimators=n_estimators_ada, random_state=42)
 
+start_time = time.time()
 ada.fit(all_selectedFeatures_df_train, y_train)
+end_time = time.time()
+
+ada_training_time = end_time - start_time
 
 y_train_predict_ada = ada.predict(all_selectedFeatures_df_train)
+
+start_time = time.time()
 y_test_predict_ada = ada.predict(all_selectedFeatures_df_test)
+end_time = time.time()
+
+ada_testing_time = end_time -start_time 
 
 train_accuracy_ada = accuracy_score(y_train, y_train_predict_ada)
 test_accuracy_ada = accuracy_score(y_validation, y_test_predict_ada)
@@ -444,10 +518,18 @@ base_learners_voting = [
 
 votingModel = VotingClassifier(estimators=base_learners_voting, voting='hard')
 
+start_time = time.time()
 votingModel.fit(all_selectedFeatures_df_train, y_train)
+end_time = time.time()
+votingModel_training_time = end_time - start_time
 
 y_train_predict_voting = votingModel.predict(all_selectedFeatures_df_train)
+
+start_time = time.time()
 y_test_predict_voting = votingModel.predict(all_selectedFeatures_df_test)
+end_time = time.time()
+
+votingModel_testing_time = end_time - start_time
 
 train_accuracy_voting = accuracy_score(y_train, y_train_predict_voting)
 test_accuracy_voting = accuracy_score(y_validation, y_test_predict_voting)
@@ -469,10 +551,18 @@ meta_learner = AdaBoostClassifier(n_estimators=50, random_state=42)
 # meta_learner = xgb.XGBClassifier()
 stackingModel = StackingClassifier(estimators=base_learners_stacking, final_estimator=meta_learner)
 
+start_time = time.time()
 stackingModel.fit(all_selectedFeatures_df_train, y_train)
+end_time = time.time()
+
+stackingModel_training_time = end_time - start_time 
 
 y_train_predict_stacking = stackingModel.predict(all_selectedFeatures_df_train)
+start_time = time.time()
 y_test_predict_stacking = stackingModel.predict(all_selectedFeatures_df_test)
+end_time = time.time()
+
+stackingModel_testing_time = end_time - start_time 
 
 train_accuracy_stacking = accuracy_score(y_train, y_train_predict_stacking)
 test_accuracy_stacking = accuracy_score(y_validation, y_test_predict_stacking)
@@ -491,3 +581,78 @@ with open('CMyTrainModel.pkl', 'wb') as f:
     pickle.dump(ada, f)
     pickle.dump(votingModel, f)
     pickle.dump(stackingModel, f)
+
+
+labels = ['Logistic regression', 'SVC', 'Decision Tree','Random Forest','KNN','Xgboost','adaboost','Voting','Staking']
+
+# Bar values
+values = [round(training_time_Logistic_regression,4), round(SVC_Training_time,4), round(DT_Training_time,4),round(rf_training_time,4),round(Knn_training_time,4),round(xgboost_training_time,4),round(ada_training_time,4),round(votingModel_training_time,4),round(stackingModel_training_time,4)]
+
+# Plotting the bar graph
+plt.figure(figsize=(10, 8))
+plt.bar(labels, values, color=['blue'])
+
+# Adding the values on top of the bars
+for i, value in enumerate(values):
+    plt.text(i, value, str(value), ha='center', va='bottom', fontweight='bold')
+
+# Adding title and labels
+plt.title('Model Training Time')
+plt.ylabel('Time')
+
+# Display the plot
+plt.show()
+
+# Bar values
+values = [round(testing_time_Logistic_regression,4), round(SVC_Testing_time,4), round(DT_Testing_time,4),round(rf_testing_time,4),round(Knn_testing_time,4),round(xgboost_testing_time,4),round(ada_testing_time,4),round(votingModel_testing_time,4),round(stackingModel_testing_time,4)]
+
+# Plotting the bar graph
+plt.figure(figsize=(10, 8))
+plt.bar(labels, values, color=['Green'])
+
+# Adding the values on top of the bars
+for i, value in enumerate(values):
+    plt.text(i, value, str(value), ha='center', va='bottom', fontweight='bold')
+
+# Adding title and labels
+plt.title('Model Testing Time')
+plt.ylabel('Time')
+
+# Display the plot
+plt.show()
+
+# Bar values
+values = [round(Accuracy_Train_Logistic_regrssion,4), round(SVC_Accuracy_train,4), round(train_accuracy_dt,4),round(train_accuracy_rf,4),round(train_accuracy_knn,4),round(train_accuracy_xgb,4),round(train_accuracy_ada,4),round(train_accuracy_voting,4),round(train_accuracy_stacking,4)]
+
+# Plotting the bar graph
+plt.figure(figsize=(10, 8))
+plt.bar(labels, values, color=['red'])
+
+# Adding the values on top of the bars
+for i, value in enumerate(values):
+    plt.text(i, value, str(value), ha='center', va='bottom', fontweight='bold')
+
+# Adding title and labels
+plt.title('Training Accuracy')
+plt.ylabel('Accuracy')
+
+# Display the plot
+plt.show()
+
+# Bar values
+values = [round(Accuracy_Testing_Logistic_regrssion,4), round(SVC_Accuracy_test,4), round(test_accuracy_dt,4),round(test_accuracy_rf,4),round(test_accuracy_knn,4),round(test_accuracy_xgb,4),round(test_accuracy_ada,4),round(test_accuracy_voting,4),round(test_accuracy_stacking,4)]
+
+# Plotting the bar graph
+plt.figure(figsize=(10, 8))
+plt.bar(labels, values, color=['yellow'])
+
+# Adding the values on top of the bars
+for i, value in enumerate(values):
+    plt.text(i, value, str(value), ha='center', va='bottom', fontweight='bold')
+
+# Adding title and labels
+plt.title('Testing Accuracy')
+plt.ylabel('Accuracy')
+
+# Display the plot
+plt.show()

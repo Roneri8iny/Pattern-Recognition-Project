@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn import metrics
 import numpy as np
 
-Newdata = pd.read_csv("testData.csv")
+Newdata = pd.read_csv("C:\\Users\\aliaa\\OneDrive\\Desktop\\Pattern-Recognition-Project\\Milestone 2\\testData.csv")
 test_data = Newdata
 
 with open('CMean.pkl', 'rb') as f:
@@ -174,10 +174,11 @@ scaled_df = pd.DataFrame(scaled_data, columns=X.columns)
 
 all_selectedFeatures_df_test = pd.DataFrame()
 
+
 for column in all_selectedFeatures_df_columns:
-    all_selectedFeatures_df_test[column] = X[column]
+    all_selectedFeatures_df_test[column] = scaled_df[column]
 
-
+# print(all_selectedFeatures_df_test)
 
 #logistic
 y_predict_test = logistic_model.predict(all_selectedFeatures_df_test)
